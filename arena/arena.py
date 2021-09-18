@@ -4,6 +4,7 @@ from time import sleep
 from colorama import init
 from models.things import Thing, sort_key
 from models.warriors import Child, Paladin, Warrior
+
 from termcolor import colored
 
 init()
@@ -37,6 +38,9 @@ NAMES = [
     ('Thomas Ross', 'm'),
     ('Henry Watkins', 'm'),
 ]
+
+if COUNT_PERSES > len(NAMES):
+    COUNT_PERSES = len(NAMES)
 
 THINGS = sorted([
     Thing('Socks of Fortune', random.randint(0, 10) / 100,
