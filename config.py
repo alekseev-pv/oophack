@@ -6,14 +6,16 @@ from presets.starwars import presets
 THING_SETTINGS = {
     'DefencePercent': (0, 10),
     'AttackPoints': (5, 15),
-    'HealthPoints': (30, 50),
+    'HealthPoints': (10, 20),
 }
 PERSON_SETTINGS = {
     'DefencePercent': (15, 30),
     'AttackPoints': (20, 30),
-    'HealthPoints': (220, 300),
+    'HealthPoints': (50, 100),
 }
 GENERAL_SETTINGS = {
     'WarriorsCount': 10,
-    'MaximumGearInOneHand': 4
+    'GearInOneHand': (1, 4),
+    'Delay': (2, 4),
+    'UseDelay': True,
 }
