@@ -1,63 +1,64 @@
 __all__ = ['equipments', 'Dagger', 'Sword', 'Chest', 'Shield']
 
+
 class Armor:
 
     def __init__(self, name: str, armor: float, *args, **kwargs) -> None:
         self.name: str = name
-        self.armor = armor
+        self.armor: float = armor
         super().__init__()
 
-    def __str__(self):
-        return  self.name
+    def __str__(self) -> str:
+        return self.name
 
 
 class Shield(Armor):
 
-    def __init__(self, name, block_chance: float, armor: float, *args, **kwargs):
-        self.block_chance = block_chance
+    def __init__(self, name, block_chance: float, armor: float, *args, **kwargs) -> None:
+        self.block_chance: float = block_chance
         super().__init__(name, armor, *args, **kwargs)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f'{self.name}'
 
 
 class Chest(Armor):
 
-    def __init__(self, name, hp, armor: float, *args, **kwargs):
-        self.hp = hp
+    def __init__(self, name, hp, armor: float, *args, **kwargs) -> None:
+        self.hp: float = hp
         super().__init__(name, armor, *args, **kwargs)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f'{self.name}'
 
 
 class Weapon:
-    def __init__(self, name: str, damage: float, *args, **kwargs):
+    def __init__(self, name: str, damage: float, *args, **kwargs) -> None:
         self.name: str = name
         self.damage: float = damage
         super().__init__()
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
 
 class Sword(Weapon):
 
-    def __init__(self, name: str, ignore_armor: float, damage: float, *args, **kwargs):
+    def __init__(self, name: str, ignore_armor: float, damage: float, *args, **kwargs) -> None:
         self.ignore_armor: float = ignore_armor
         super().__init__(name, damage, *args, **kwargs)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f'{self.name}'
 
 
 class Dagger(Weapon):
 
-    def __init__(self, name: str, damage: float, crit_chance: float, *args, **kwargs):
+    def __init__(self, name: str, damage: float, crit_chance: float, *args, **kwargs) -> None:
         self.crit_chance: float = crit_chance
         super().__init__(name, damage, *args, **kwargs)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f'{self.name}'
 
 

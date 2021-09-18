@@ -10,7 +10,7 @@ class Person:
     def __init__(self, name: str, *args, **kwargs) -> None:
         # all person start with default attack, protect,  hp
         self.name: str = name
-        self.hp: int = 100
+        self.hp: float = 100
         self.damage: float = 5
         self.armor: float = 0.2
         self.sword: int = 0
