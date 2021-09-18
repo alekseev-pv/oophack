@@ -6,7 +6,7 @@ class Paladin(Person):
         super().__init__(name, hp, base_atack, base_protection)
         self.hp = hp * 2
         self.protection = base_protection * 2
-        print(f'Явилось новый воин Альянса!\n   Дитя света -  Paladin {self.name}')
+        print(f'Явился новый воин Альянса!\n   Дитя света -  Paladin {self.name}')
 
 # Сделаю по мативам Вов классик))
 # class Warrior(Person):

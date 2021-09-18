@@ -1,3 +1,6 @@
+from typing import Dict
+
+
 ONE = 1
 PCT_MAX = 100
 MAX_PROTECTION = MAX_ATACK = 10
@@ -22,3 +25,17 @@ class Thing:
 
     def __str__(self) -> str:
         return f'Экипировано {self.name}!'
+
+def parse_gear(gears: Dict) -> Dict:
+    gears_dict = {}
+    for status, gears in gears.items():
+        try:
+            gears_dict[status]
+        except KeyError:
+            gears_dict[status] = []
+        for gear in gears:
+            # ВАЖНЫЙ МОМЕНТ!
+            name, protection, damage, add_hp, precision, crit = gear.values()
+            tmp = Thing(name, protection, damage, add_hp, precision, crit)
+            gears_dict[status].append(tmp)
+    return gears_dict

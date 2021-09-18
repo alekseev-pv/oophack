@@ -1,6 +1,7 @@
 from random import randint
 from gear import Thing
 from typing import List
+from time import sleep
 
 MIN_PCT = 1
 MAX_PCT = 100
@@ -27,18 +28,26 @@ class Person:
         self.protection = base_protection 
         self.precision = BASE_PRECISION
         self.crit = BASE_CRIT
+        if self.__class__.__name__ == 'Person':
+            print(f'На арене появился - {self.name}!')
 
     def take_on_cheracter_gear(self, set_things: List[Thing]):
         self.items = []
+        print('НАДЕТЬ СНАЯРЖЕНИЕ!')
+        print(f'____________________________')
         for thing in set_things:
+            print(thing)
             self.items.append(thing.name)
             self.hp += thing.add_hp
             self.atack += thing.damage
             self.protection += thing.protection
             self.precision += thing.precision
             self.crit += thing.crit
+            sleep(0.5)
         return (
-            f'Экипированы {" ,".join(self.items)}\n'
+            f'____________________________\n'
+            f'ЭКИПИРОВКА ЗАКОНЧЕНА!\n\n'
+            f'Экипированы: {" ,".join(self.items)}\n'
             f'Теперь у персонажа {self.name}:\n'
             f'HP = {self.hp}\n'
             f'Atack = {self.atack}\n'
@@ -68,7 +77,10 @@ class Person:
             tmp = damage * (self.protection / 100)
         print(f'{self} получил {tmp} урона! АБСООООРБ!\n')
         self.hp -= tmp
-        print (f'У {self} осталось {self.hp} HP\n')
+        if self.hp < 1:
+            print (f'У {self} осталось 0 HP\n')
+        else:
+            print (f'У {self} осталось {self.hp} HP\n')
 
     
 

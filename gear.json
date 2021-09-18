@@ -40,22 +40,6 @@
             "add_hp": 1,
             "precision": 1,
             "crit": 1
-        },
-        {
-            "name": "ТОПОР_ОРДЫ",
-            "protection": 1,
-            "damage": 10,
-            "add_hp": 5,
-            "precision": 10,
-            "crit": 20
-        },
-        {
-            "name": "СВЯЩЕННАЯ_РУКОПИСЬ_АЛЬЯНСА",
-            "protection": 10,
-            "damage": 2,
-            "add_hp": 20,
-            "precision": 15,
-            "crit": 20
         }
     ],
     "horde_items":
