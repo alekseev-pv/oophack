@@ -1,6 +1,7 @@
 from random import choice
 from typing import List
 import math
+import curses
 
 from colorama import Fore, Back, Style
 
@@ -60,3 +61,13 @@ def start_fight(percs):
             percs.remove(defend_pers)
     print('\n')
     print(Back.YELLOW + Fore.BLACK + f'Бой закончен! Победитель {attack_pers.name}!' + Style.RESET_ALL)
+
+
+# def fight_with_map(percs):
+#     pad = curses.newpad(100, 100)
+#     for y in range(0, 99):
+#         for x in range(0, 99):
+#             pad.addch(y, x, ord('a') + (x * x + y * y) % 26)
+#     pad.refresh(0, 0, 5, 5, 20, 75)
+#     # start_fight(percs)
+
