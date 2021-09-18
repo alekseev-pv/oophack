@@ -22,12 +22,17 @@ def draw_all_percs(
 
     def print_xy(x, y, message, color):
         # Draw the text
-        screen.addstr(x, y, message, color)
+        screen.attron(color)
+        screen.addstr(x, y, message)
+        screen.attroff(color)
+        screen.refresh()
+
 
     px, py = 4, 2
     ix, iy = 1, 100
     color = curses.color_pair(1)
-    print_xy(ix, iy, "INFO:", color)
+    # print_xy(ix, iy, "INFO:", color)
+    screen.addstr(ix, iy, "INFO:", color)
     for perc in percs:
         ix += 1
         if perc != attacker and perc != victim:
