@@ -38,13 +38,16 @@ class Person:
     final_protection: float
     health_points: float
     attack_points: float
+    is_unique: bool
     things: List[Thing]
 
-    def __init__(self, name, defence_percent, attack_points, health_points):
+    def __init__(self, name, defence_percent, attack_points, health_points,
+                 is_unique):
         self.name = name
         self.defence_percent = defence_percent
         self.attack_points = attack_points
         self.health_points = health_points
+        self.is_unique = is_unique
 
         self.__recalculate_final_protection()
 
@@ -94,8 +97,12 @@ class Person:
 class Paladin(Person):
     """Класс Паладина. Наследуется от Person."""
 
-    def __init__(self, name, defence_percent, attack_points, health_points):
-        super().__init__(name, defence_percent, attack_points, health_points)
+    warrior_type = 'Паладин'
+
+    def __init__(self, name, defence_percent, attack_points, health_points,
+                 is_unique):
+        super().__init__(name, defence_percent, attack_points, health_points,
+                         is_unique)
 
         self.health_points *= 2
         self.defence_percent *= 2
@@ -104,8 +111,12 @@ class Paladin(Person):
 class Warrior(Person):
     """Класс Воина. Наследуется от Person."""
 
-    def __init__(self, name, defence_percent, attack_points, health_points):
-        super().__init__(name, defence_percent, attack_points, health_points)
+    warrior_type = 'Воин'
+
+    def __init__(self, name, defence_percent, attack_points, health_points,
+                 is_unique):
+        super().__init__(name, defence_percent, attack_points, health_points,
+                         is_unique)
 
         self.attack_points *= 2
 
@@ -126,10 +137,12 @@ class Game:
 
     def __create_things(self, thing_settings, things_pre_list):
         things_pre_list_count = len(things_pre_list)
+        max_gear_count = (self.general_settings['WarriorsCount'] *
+                          self.general_settings['MaximumGearInOneHand'])
 
         random.seed()
         things = []
-        while len(things) < 5:
+        while len(things) < max_gear_count:
             tid = random.randint(0, things_pre_list_count - 1)
             pre_name, is_weapon, is_clothes, variants = things_pre_list[tid]
 
@@ -154,4 +167,37 @@ class Game:
         self.things = sorted(things, key=lambda v: v.defence_percent)
 
     def __create_wariors(self, person_settings, persons_pre_list):
-        pass
+        warriors_variants = (Paladin.__name__, Warrior.__name__)
+
+        persons_list = list(persons_pre_list)
+        # max_gear_count = (self.general_settings['MaximumGearInOneHand'])
+
+        warriors_max_count = self.general_settings['WarriorsCount']
+        persons_list_count = len(persons_list)
+        if warriors_max_count > persons_list_count:
+            warriors_max_count = persons_list_count
+
+        random.seed()
+        self.warriors = []
+        while len(self.warriors) < warriors_max_count:
+            persons_list_count = len(persons_list)
+            pid = random.randint(0, persons_list_count - 1)
+            name, is_unique = persons_list.pop(pid)
+
+            defence_percent = random.randint(
+                *person_settings['DefencePercent'])
+            attack_points = random.randint(
+                *person_settings['AttackPoints'])
+            health_points = random.randint(
+                *person_settings['HealthPoints'])
+            warrior_class = warriors_variants[
+                random.randint(0, len(warriors_variants) - 1)]
+
+            constructor = globals()[warrior_class]
+            self.warriors.append(
+                constructor(name=name,
+                            defence_percent=defence_percent,
+                            attack_points=attack_points,
+                            health_points=health_points,
+                            is_unique=is_unique)
+            )
