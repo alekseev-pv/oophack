@@ -6,7 +6,7 @@ from models import persons_names, things_names
 # Количество персонажей, одновременно участвующих в игре
 PERS_NUMBER = 10
 # Количество типов персонажей
-PERS_CLASS_NUMBER = 2
+PERS_CLASS_NUMBER = 3
 # Максимальное количество вещей в одни руки
 MAX_THING_NUMBER = 4
 
@@ -80,6 +80,16 @@ class Warrior(Person):
         self.attack = attack * 2
 
 
+class Cheater(Person):
+    """Класс наследуется от персонажа, при этом
+    добавляется способность убивать соперника с 1 удара
+    с вероятностью 50/50
+    """
+
+    def __str__(self):
+        return f'{self.name} - читер'
+
+
 def create_things(number=random.randint(
         PERS_NUMBER, PERS_NUMBER*MAX_THING_NUMBER)):
     """Функция создания <number> количества
@@ -147,6 +157,8 @@ def create_persons(number=PERS_NUMBER):
             person = Paladin(name, vitality, attack, defence)
         elif persons_class == 1:
             person = Warrior(name, vitality, attack, defence)
+        elif persons_class == 2:
+            person = Cheater(name, vitality, attack, defence)
         # по идее, исключений быть не должно, но на всякий случай
         else:
             person = Person(name, vitality, attack, defence)
@@ -195,6 +207,10 @@ def match(persons):
         rivals_nums = random.sample(range(len(pers_list)), 2)
         # 0 - защищающийся, 1 - нападающий
         damage = pers_list[rivals_nums[1]].attack
+        pc = str(pers_list[rivals_nums[1]].__class__).split('.')[1][:-2]
+        if pc == 'Cheater':
+            fatal_damage = pers_list[rivals_nums[0]].vitality * 2
+            damage = random.choice([damage, fatal_damage])
         pers_list[rivals_nums[0]].attack_damage(damage)
         print(f'{pers_list[rivals_nums[1]]} нанёс урон позиции '
               f'{pers_list[rivals_nums[0]]} на {damage} единиц')
@@ -202,7 +218,10 @@ def match(persons):
             print(f'{pers_list[rivals_nums[0]]} покидает арену')
             del pers_list[rivals_nums[0]]
 
-    print(f'Победителем турнира объявляется {pers_list[0]}')
+    winner_class = str(pers_list[0].__class__).split('.')[1]
+    winner_class = winner_class[:-2]
+    print(f'Победителем турнира объявляется '
+          f'{pers_list[0]}: {winner_class}')
 
 
 def runner():
