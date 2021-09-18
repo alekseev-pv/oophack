@@ -1,3 +1,5 @@
+import colorama
+from colorama import Fore, Back, Style
 import random
 from time import sleep
 from typing import List
@@ -309,6 +311,8 @@ class Game:
         return None
 
     def console_game_process(self):
+        colorama.init()
+
         console = ConsoleOutput(self.general_settings)
 
         console.write_message_with_delay_after(
@@ -329,6 +333,9 @@ class Game:
 
         arena_round = 0
 
+        color_attack = Fore.CYAN
+        color_defend = Fore.BLUE
+
         while len(self.warriors) > 1:
             arena_round += 1
             warriors = random.sample(self.warriors, 2)
@@ -343,9 +350,10 @@ class Game:
             defend_name = defend.name_with_rank()
             defend_skill = self.__choose_skill(defend, 'defend_skills')
 
-            base_text = (f'>>> Раунд #{arena_round:003n}: 🗡 {attack_name}'
-                         f'[{attack_hp}➕] наносит удар по 🛡 {defend_name}'
-                         f'[{defend_hp}➕]')
+            base_text = (f'>>> Раунд #{arena_round:003n}: '
+                         f'🗡 {color_attack}{attack_name}{Fore.RESET} '
+                         f'[{attack_hp}➕] наносит удар по 🛡 {color_defend}'
+                         f'{defend_name}{Fore.RESET} [{defend_hp}➕]')
 
             attack_text = ''
 
@@ -355,9 +363,12 @@ class Game:
 
                 if ap_multiplicator != 1:
                     attack_damage = round(ap_multiplicator * attack_damage)
-                    attack_text = f' ({attack_skill["name"]})'
+                    attack_text = (f' ({Fore.LIGHTBLACK_EX}{Style.BRIGHT}'
+                                   f'{attack_skill["name"]}{Style.RESET_ALL}'
+                                   f'{Fore.RESET})')
 
-            damage_text = f' и отнимает {attack_damage}➕{attack_text}. '
+            damage_text = (f' и отнимает {Fore.RED}{attack_damage}{Fore.RESET}'
+                           f'➕{attack_text}. ')
             defend_text = ''
 
             if defend_skill:
@@ -370,12 +381,17 @@ class Game:
                 if attack_repelling:
                     attack_damage = 0
                     damage_text = ''
-                    defend_text = f', но защищающийся {defend_skill["name"]}. '
+                    defend_text = (f', но защищающийся {Fore.LIGHTBLACK_EX}'
+                                   f'{Style.BRIGHT}{defend_skill["name"]}'
+                                   f'{Style.RESET_ALL}{Fore.RESET}. ')
 
                 if contrattack:
                     defend_base_damage = defend.get_damage_points(attack)
-                    defend_text += (f'Защищайщийся провел успешную контратаку.'
-                                    f' Урон составил {defend_base_damage}➕')
+                    defend_text += (f'Защищайщийся провел {Fore.LIGHTBLACK_EX}'
+                                    f'{Style.BRIGHT}успешную контратаку'
+                                    f'{Style.RESET_ALL}{Fore.RESET}.'
+                                    f' Урон составил {Fore.RED}'
+                                    f'{defend_base_damage}{Fore.RESET}➕')
                     attack.decrease_health_points(defend_base_damage)
 
                 if hp_multiplicator != 1 and \
@@ -383,8 +399,11 @@ class Game:
                             attack_damage, fake_launch=True) > 0:
                     defend_hp_delta = defend.multiplicate_health_points(
                         hp_multiplicator)
-                    defend_text += (f'Защищающийся {defend_skill["name"]}. '
-                                    f'Прибавил {defend_hp_delta}➕. ')
+                    defend_text += (f'Защищающийся {Fore.LIGHTBLACK_EX}'
+                                    f'{Style.BRIGHT}{defend_skill["name"]}'
+                                    f'{Style.RESET_ALL}{Fore.RESET}. '
+                                    f'Прибавил {Fore.GREEN}{defend_hp_delta}'
+                                    f'{Fore.RESET}➕. ')
 
             defend.decrease_health_points(attack_damage)
 
@@ -398,9 +417,16 @@ class Game:
                     dead_warrior = self.warriors.pop(index)
 
             if isinstance(dead_warrior, Person):
+                clr = color_attack if dead_warrior == attack else color_defend
                 console.write_message_with_delay_after(
-                    f'💀 {dead_warrior.name} повержен!', long_delay=True)
+                    (f'💀 {clr}{dead_warrior.name_with_rank()}{Fore.RESET} '
+                     f'{Back.RED}{Fore.BLACK}повержен{Back.RESET}'
+                     f'{Fore.RESET}!'),
+                    long_delay=True)
 
         winner = self.warriors[0]
-        print(f'🏆 {winner.name} вышел победителем из этой жестокой '
-              f'битвы c {winner.total_health_points()}➕')
+
+        clr = color_attack if winner == attack else color_defend
+        print(f'🏆 {clr}{winner.name_with_rank()}{Fore.RESET} вышел '
+              f'победителем из этой жестокой битвы c {Fore.GREEN}'
+              f'{winner.total_health_points()}{Fore.RESET}➕')
