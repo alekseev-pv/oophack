@@ -18,6 +18,14 @@
             "crit": 20
         },
         {
+            "name": "Кольцо_BIG_precision",
+            "protection": 1,
+            "damage": 10,
+            "add_hp": 1,
+            "precision": 20,
+            "crit": 1
+        },
+        {
             "name": "Шапка_Устойчивости",
             "protection": 10,
             "damage": 1,
@@ -72,6 +80,14 @@
             "add_hp": 20,
             "precision": 15,
             "crit": 20
+        },
+        {
+            "name": "РАЗЯЩИЙ_МЕЧ_АЛЬЯНСА",
+            "protection": 1,
+            "damage": 20,
+            "add_hp": 1,
+            "precision": 1,
+            "crit": 1
         }
     ]
 

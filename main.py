@@ -19,6 +19,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def sort_key(e):
     return e['precision']
+
 if __name__ == '__main__':
     gears = os.path.join(BASE_DIR, "gear.json")
     with open(gears, "r") as read_file:
