@@ -159,6 +159,7 @@ class Arena:
                 equipment_count = len(equipments)
                 i += 1
             i = 0
+            print('========================================================')
 
     def introduce_faiters(self) -> None:
         print(f'В левом углу  {self.characters[0]}')
