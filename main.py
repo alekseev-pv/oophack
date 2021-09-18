@@ -1,6 +1,8 @@
+import colorama
+import names
 import random
 
-import names
+from colorama import Back, Fore, Style
 
 
 class Thing:
@@ -70,7 +72,7 @@ class Person:
         """
         selected_thing = self.things[random.randint(
             0, len(self.things) - 1)]
-        return selected_thing.attack_per
+        return selected_thing.attack_per * self.base_attack
 
     def is_alive(self):
         """
@@ -120,24 +122,35 @@ class Game():
         return [all_things[i] for i in range(random.randint(1, 4))]
 
     def battle(self, first_warrior, second_warrior):
+        colorama.init()
+        print(Back.GREEN + Fore.YELLOW + f'Бой между {first_warrior.name} и '
+              f'{second_warrior.name} начинается!')
+        print(Style.RESET_ALL)
+        first_warrior.hp = 100
+        second_warrior.hp = 100
         while True:
-            print(first_warrior.hp)
-            print(second_warrior.hp)
+            print(f'{first_warrior.name} здоровья: '
+                  f'{round(first_warrior.hp,2)}')
+            print(f'{second_warrior.name} здоровья: '
+                  f'{round(second_warrior.hp,2)}')
+
             warrior_damage = round(first_warrior.attack(), 2)
-            print(
-                f'{first_warrior.name} наносит удар по '
-                f'{second_warrior.name} на {warrior_damage} урона')
+            print(Back.YELLOW + Fore.RED +
+                  f'{first_warrior.name} наносит удар по '
+                  f'{second_warrior.name} на {warrior_damage} урона' +
+                  Style.RESET_ALL)
             second_warrior.got_attacked(warrior_damage)
             if not second_warrior.is_alive():
                 print(f'{first_warrior.name} победил')
                 return second_warrior
             warrior_damage = round(second_warrior.attack(), 2)
-            print(
-                f'{second_warrior.name} наносит удар по '
-                f'{first_warrior.name} на {warrior_damage} урона')
+            print(Back.BLUE + Fore.RED +
+                  f'{second_warrior.name} наносит удар по '
+                  f'{first_warrior.name} на {warrior_damage} урона' +
+                  Style.RESET_ALL)
             first_warrior.got_attacked(warrior_damage)
             if not first_warrior.is_alive():
-                print(f'{second_warrior.name} победил')
+                print(f'{second_warrior.name} победил' + Style.RESET_ALL)
                 return first_warrior
 
     def auto_game(self, warrior_names, warrior_types):
@@ -146,7 +159,7 @@ class Game():
                          for i in range(20)]  # список имен персонажей
         warriors = [warrior_types[random.randint(0, 1)](
             warrior_names[random.randint(
-                0, len(warrior_names)-1)], 100, random.randint(5, 10),
+                0, len(warrior_names)-1)], 100, random.randint(10, 100),
             random.uniform(0.01, 0.1)) for i in range(0, 10)]  # список войнов
         for warrior in warriors:
             warrior.set_things(self.get_random_things(all_things))
