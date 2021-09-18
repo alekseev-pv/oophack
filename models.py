@@ -1,78 +1,71 @@
-CHARACTERS = [
-    {
-        'name': 'Darrow O\'Lykos',
-        'hp': 100,
-        'defense': 75,
-        'attack': 100,
-        'fraction': 'gold',
-    },
-    {
-        'name': 'Sevro au Barca',
-        'hp': 80,
-        'defense': 60,
-        'attack': 125,
-        'fraction': 'gold'
-    },
-    {
-        'name': 'Sefi',
-        'hp': 100,
-        'defense': 80,
-        'attack': 90,
-        'fraction': 'obsidian'
-    },
-    {
-        'name': 'Ragnar Volarus',
-        'hp': 150,
-        'defense': 100,
-        'attack': 125,
-        'fraction': 'obsidian'
-    },
-    {
-        'name': 'Volga Fjorgan',
-        'hp': 90,
-        'defense': 70,
-        'attack': 85,
-        'fraction': 'obsidian'
-    },
-    {
-        'name': 'Cassius au Bellona',
-        'hp': 100,
-        'defense': 80,
-        'attack': 90,
-        'fraction': 'gold'
-    },
+from __future__ import annotations
+from assets import CHARACTERS, ITEMS
+import random
 
-]
 
-ITEMS = [
-    {
-        'name': 'Razor',
-        'attack': 30,
-        'defense': 5,
-        'durability': 60,
-    },
-    {
-        'name': 'PulseArmor',
-        'attack': 5,
-        'defense': 10,
-        'durability': 90,
-    },
-    {
-        'name': 'SlingBlade',
-        'attack': 20,
-        'defense': 3,
-        'durability': 40,
-    },
-    {
-        'name': 'IonBlade',
-        'attack': 15,
-        'defense': 3,
-        'durability': 50,
-    },
-    {
-        'name': 'GhostCloak',
-        'attack': 3,
-        'defense': 10,
-        'durability': 100,
-    }
-]
+class Person(object):
+    def __init__(self, hp: int, attack: int, defense: int, name: str) -> None:
+        self.hp = hp
+        self.attack = attack
+        self.defense = defense
+        self.name = name
+
+    def show(self):
+        print(f'{self.name} has entered the arena')
+        print(
+            f'Stats: {self.hp} hp, {self.attack} damage rate, {self.defense} defense.\n\n')
+
+
+class Item(object):
+    def __init__(self, attack: float, defense: float, durability: int,
+                 name: str) -> None:
+        self.attack = attack / 100
+        self.defense = defense / 100
+        self.durability = durability
+        self.name = name
+        if self.defense > 0.1:
+            self.defense = 0.1
+    
+    def show(self):
+        print(f'Item name: {self.name}')
+        print(f'attack: {self.attack}\ndefense: {self.defense}\n'
+              f'durability: {self.durability}\n\n')
+
+
+class Obsidian(Person):
+    def __init__(self, hp: int, attack: int, defense: int, name: str) -> None:
+        super().__init__(hp, attack, defense, name)
+        self.hp = hp * 2
+        self.defense = defense * 2
+
+
+class Gold(Person):
+    def __init__(self, hp: int, attack: int, defense: int, name: str) -> None:
+        super().__init__(hp, attack, defense, name)
+        self.attack = attack * 2
+
+
+for person in CHARACTERS:
+    if person['fraction'] == 'gold':
+        gold = Gold(
+            person['hp'],
+            person['attack'],
+            person['defense'],
+            person['name'])
+        gold.show()
+    else:
+        obsidian = Obsidian(
+            person['hp'],
+            person['attack'],
+            person['defense'],
+            person['name'])
+        obsidian.show()
+
+for item in ITEMS:
+    item = Item(
+        item['attack'],
+        item['defense'],
+        item['durability'],
+        item['name'],
+    )
+    item.show()
