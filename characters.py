@@ -18,18 +18,11 @@ class Person(object):
             self.attack = self.attack+item.attack_mod
             print(f'Атака персонажа увеличивается на {item.attack_mod}')
         if item.defence_mod is not None:
-            print(item.defence_mod)
-            print(self.defence)
-            print(self.defence*item.defence_mod)
             self.defence = self.defence + (self.defence*item.defence_mod)
             print(f'Защита персонажа увеличивается на {item.defence_mod} %')
         if item.health_mod is not None:
             self.health = self.health + item.health_mod
             print(f'Персонаж {self.name} ощущает рост жизненных сил на {item.health_mod}')
-
-        
-    def health_calc(self):
-        pass
 
 class Paladin(Person):
     """Класс рыцарь-паладин"""
@@ -47,7 +40,3 @@ class Warrior(Person):
         super().__init__(name, health, attack, defence)
         self.attack = attack*2
         print(f'Персонаж {self.name} класса воин создан')
-
-
-        
-
