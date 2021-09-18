@@ -1,0 +1,32 @@
+{% load static %}
+<html lang="ru">
+  <head>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="img/fav/fav.ico" type="image">
+    <link rel="apple-touch-icon" sizes="180x180" href="img/fav/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="img/fav/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/fav/favicon-16x16.png">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <title>
+      {% block title %}
+        Заголовка нет
+      {% endblock %} 
+    </title>
+  </head>
+  <body style='background-color: #232323; color: #CECECE'>
+
+
+    <main>
+      <div class="container">
+        {% block content %}
+          Информации пока нет
+        {% endblock %}
+      </div>  
+    </main>
+
+  </body>
+</html>

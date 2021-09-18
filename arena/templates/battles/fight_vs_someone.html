@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}
+  Наши бойцы
+{% endblock %}
+
+{% block content %}
+
+  {% for log in loggs %}
+    <p>{{ log }}</p>
+  {% endfor %}
+
+  {% if not forloop.last %}<hr>{% endif %}
+
+
+{% endblock %} 

@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block title %}
+  Наши бойцы
+{% endblock %}
+
+{% block content %}
+
+  <h1 style="margin-top: 80px; margin-bottom: 30px">Список наших бойцов</h1>
+
+  <h2 style="margin-top: 50px; margin-bottom: 30px">Паладины</h2>
+
+
+  {% for paladin in paladins_list %}
+  <ul>
+    <li style="color: #BF442A">
+        {{ paladin.name }} - id {{ paladin.id }}
+      </a>  
+    </li>
+    <li style="color: #E5E7E9">
+       На голове у него: <span style="color: #2ABFA2">{{ paladin.helmet }}</span>
+    </li>
+
+     <li style="color: #E5E7E9">
+       На теле у него: <span style="color: #2ABFA2">{{ paladin.chest }}</span>
+    </li>
+
+     <li style="color: #E5E7E9">
+       В правой руке: <span style="color: #2ABFA2">{{ paladin.first_weapon }}</span>
+    </li>
+
+     <li style="color: #E5E7E9">
+       В левой руке: <span style="color: #2ABFA2">{{ paladin.second_weapon }}</span>
+    </li>
+
+     <li style="color: #E5E7E9">
+       На ногах у него: <span style="color: #2ABFA2">{{ paladin.leg_armor }}</span>
+    </li>
+  </ul>
+  {% endfor %}
+
+
+  <h3 style="margin-top: 50px; margin-bottom: 30px">Воины</h2>
+  {% for warrior in warriors_list %}
+  <ul>
+    <li style="color: #BF442A">
+        {{ warrior.name }} - id {{ warrior.id }}
+      </a>  
+    </li>
+    <li style="color: #E5E7E9">
+       На голове у него: <span style="color: #2ABFA2">{{ warrior.helmet }}</span>
+    </li>
+
+     <li style="color: #E5E7E9">
+       На теле у него: <span style="color: #2ABFA2">{{ warrior.chest }}</span>
+    </li>
+
+     <li style="color: #E5E7E9">
+       В правой руке: <span style="color: #2ABFA2">{{ warrior.first_weapon }}</span>
+    </li>
+
+     <li style="color: #E5E7E9">
+       В левой руке: <span style="color: #2ABFA2">{{ warrior.second_weapon }}</span>
+    </li>
+
+     <li style="color: #E5E7E9">
+       На ногах у него: <span style="color: #2ABFA2">{{ warrior.leg_armor }}</span>
+    </li>
+  </ul>
+  {% endfor %}
+   
+
+  {% if not forloop.last %}<hr>{% endif %}
+
+
+{% endblock %} 
