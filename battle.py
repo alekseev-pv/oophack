@@ -5,6 +5,7 @@ import curses
 
 from colorama import Fore, Back, Style
 
+from draw_fight_map import draw_all_percs
 from person import Person
 
 
@@ -32,6 +33,7 @@ def start_fight(percs):
     # TODO(view map of battle)
     attack_pers = None
     while len(percs) > 1:
+
         attack_pers = choice(percs)
         defend_pers = find_nearest_for_attack(attack_pers, percs)
         # print(attack_pers.simple_distance(defend_pers))
@@ -63,11 +65,18 @@ def start_fight(percs):
     print(Back.YELLOW + Fore.BLACK + f'Бой закончен! Победитель {attack_pers.name}!' + Style.RESET_ALL)
 
 
-# def fight_with_map(percs):
-#     pad = curses.newpad(100, 100)
-#     for y in range(0, 99):
-#         for x in range(0, 99):
-#             pad.addch(y, x, ord('a') + (x * x + y * y) % 26)
-#     pad.refresh(0, 0, 5, 5, 20, 75)
-#     # start_fight(percs)
-
+def fight_with_map(percs, speed: float):
+    attack_pers = None
+    while len(percs) > 1:
+        attack_pers = choice(percs)
+        defend_pers = find_nearest_for_attack(attack_pers, percs)
+        draw_all_percs(attack_pers, defend_pers, percs, speed)
+        if attack_pers.simple_distance(defend_pers) <= attack_pers.radius_attack:
+            defend_pers.under_attack(attack_pers)
+        else:
+            attack_pers.run_to_target(defend_pers)
+        if defend_pers.final_hp == 0:
+            percs.remove(defend_pers)
+        draw_all_percs(attack_pers, defend_pers, percs, speed)
+    print('\n')
+    print(Back.YELLOW + Fore.BLACK + f'Бой закончен! Победитель {attack_pers.name}!' + Style.RESET_ALL)

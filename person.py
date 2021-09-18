@@ -14,7 +14,7 @@ class Person:
         self.point = point
         self.type_attack = 'melee'
         self.radius_attack = 5
-        print(f'Персонаж {self.name} создан!')
+        # print(f'Персонаж {self.name} создан!')
 
     def __str__(self):
         person_out = (f'{self.name} - {self.spec_name}\n'

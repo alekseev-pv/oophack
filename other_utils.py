@@ -36,7 +36,7 @@ def create_stuff(count=len(fill_things), need_print=False):
             print(f'Создан предмет - {thing}!')
         list_items.append(thing)
     result = sorted(list_items, key=sort_key)
-    print(f'Создано {count} предметов')
+    # print(f'Создано {count} предметов')
     return result
 
 
@@ -58,7 +58,7 @@ def create_percs(count=len(names_for_percs), need_print=False):
             perc = name_specialization(name=name, attack=attack, defense=defense, hp=hp,
                                        speed=speed, point=point)
             list_percs.append(perc)
-        print(f'Создано {num_objects} персонажей класса {name_specialization.spec_name}\n')
+        # print(f'Создано {num_objects} персонажей класса {name_specialization.spec_name}\n')
 
     positions = []
     list_percs = []
@@ -85,4 +85,4 @@ def equip_percs(percs, items, slow_time = 0):
                 wear_list.append(item)
                 perc_wear.append(item)
             perc.set_things(perc_wear)
-    print('Персонажы экипированы и готовы к бою!\n')
+    # print('Персонажы экипированы и готовы к бою!\n')
