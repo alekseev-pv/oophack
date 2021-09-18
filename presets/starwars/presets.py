@@ -63,7 +63,6 @@ PERSONS_PRE_LIST = (
 # типы скилов:
 # attack_points_multiplicator - умножаем поинты атаки на это число (атака),
 # health_points_multiplicator - умножаем поинты здоровья на это число (защита),
-# defence_points_multiplicator - умножаем поинты защиты (защита),
 # attack_repelling - отражение атаки, здоровье не уменьшается (защита),
 # contrattack - контратака, защищающийся бьет атакующего (защита)
 PERSONS_SKILLS = (
@@ -71,21 +70,21 @@ PERSONS_SKILLS = (
         'name': 'отбросил врага с помощью силы',
         'is_attack': True,
         'unique_skill': True,
-        'actions': {'attack_points_multiplicator': 1.03},
+        'actions': {'attack_points_multiplicator': 1.05},
         'probability': 0.05
     },
     {
         'name': 'подбросил гранату',
         'is_attack': True,
-        'actions': {'attack_points_multiplicator': 1.04},
+        'actions': {'attack_points_multiplicator': 1.1},
         'probability': 0.04
     },
     {
         'name': 'залечил рану',
         'is_defence': True,
         'unique_skill': True,
-        'actions': {'health_points_multiplicator': 1.05},
-        'probability': 0.03
+        'actions': {'health_points_multiplicator': 1.15},
+        'probability': 0.1
     },
     {
         'name': 'отразил удар врага',
@@ -94,7 +93,14 @@ PERSONS_SKILLS = (
         'probability': 0.07
     },
     {
-        'name': 'увернулся от атаки и пульнул в ответ',
+        'name': 'ввел врага в заблуждение с помощью силы и тот промахнулся',
+        'is_defence': True,
+        'unique_skill': True,
+        'actions': {'attack_repelling': True},
+        'probability': 0.4
+    },
+    {
+        'name': 'увернулся от атаки',
         'is_defence': True,
         'actions': {'attack_repelling': True, 'contrattack': True},
         'probability': 0.02

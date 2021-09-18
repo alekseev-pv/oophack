@@ -51,6 +51,7 @@ class Person:
     attack_points: float
     is_unique: bool
     things: List[Thing]
+    warrior_type = ''
 
     def __init__(self, name, defence_percent, attack_points, health_points,
                  is_unique, skills=None):
@@ -95,10 +96,13 @@ class Person:
         self.things.pop(self.things.index(thing))
         self.__recalculate_final_protection()
 
-    def decrease_health_points(self, attack_damage):
+    def decrease_health_points(self, attack_damage, fake_launch=False):
         """Метод вычитания health_points экземпляра в зависимости от атаки
         attack_damage."""
         damage = attack_damage
+
+        if fake_launch:
+            return self.total_health_points() - attack_damage
 
         # сперва снимаем HP со снаряжения
         if self.things:
@@ -118,6 +122,12 @@ class Person:
         health_points = self.health_points - damage
         self.health_points = 0 if health_points < 0 else health_points
 
+    def multiplicate_health_points(self, multiplicator):
+        health_points = self.health_points
+        self.health_points = round(multiplicator * self.health_points)
+
+        return self.health_points - health_points
+
     def total_defence_percent(self):
         """Вычисление количества поинтов защиты."""
         return self.__total_points('defence_percent')
@@ -132,6 +142,13 @@ class Person:
 
     def total_final_protection(self):
         return self.final_protection
+
+    def get_damage_points(self, enemy):
+        return round(self.total_attack_points() *
+                     (1 - enemy.total_final_protection()))
+
+    def name_with_rank(self):
+        return f'{self.warrior_type} {self.name}'.strip()
 
 
 class Paladin(Person):
@@ -251,7 +268,8 @@ class Game:
                 *self.person_settings['AttackPoints'])
             health_points = random.randint(
                 *self.person_settings['HealthPoints'])
-            warrior_class = random.choice(warriors_variants)
+            warrior_class = random.choices(
+                warriors_variants, weights=[0.5, 0.5])[0]
 
             skill_list = self.persons_skills if is_unique else \
                 skills_not_unique
@@ -285,7 +303,7 @@ class Game:
             skill_applied = random.choices(
                 [True, False],
                 weights=[skill['probability'], 1 - skill['probability']])[0]
-            if skill_applied or True:
+            if skill_applied:
                 return skill
 
         return None
@@ -316,22 +334,61 @@ class Game:
             warriors = random.sample(self.warriors, 2)
             attack, defend = warriors
 
-            # выяснеям количество поинтов атаки
-            attack_damage = round(
-                attack.total_attack_points() *
-                (1 - defend.total_final_protection()))
-
+            attack_skill = self.__choose_skill(attack, 'attack_skills')
+            attack_damage = attack.get_damage_points(defend)
             attack_hp = attack.total_health_points()
-            defend_hp = defend.total_health_points()
+            attack_name = attack.name_with_rank()
 
-            base_text = (f'>>> Раунд #{arena_round:003n}: 🗡 {attack.name}'
-                         f'[{attack_hp}➕] '
-                         f'наносит удар по 🛡 {defend.name}[{defend_hp}➕]')
-            damage_text = f' и отнимает {attack_damage}hp'
+            defend_hp = defend.total_health_points()
+            defend_name = defend.name_with_rank()
+            defend_skill = self.__choose_skill(defend, 'defend_skills')
+
+            base_text = (f'>>> Раунд #{arena_round:003n}: 🗡 {attack_name}'
+                         f'[{attack_hp}➕] наносит удар по 🛡 {defend_name}'
+                         f'[{defend_hp}➕]')
+
+            attack_text = ''
+
+            if attack_skill:
+                ap_multiplicator = attack_skill['actions'].get(
+                    'attack_points_multiplicator', 1)
+
+                if ap_multiplicator != 1:
+                    attack_damage = round(ap_multiplicator * attack_damage)
+                    attack_text = f' ({attack_skill["name"]})'
+
+            damage_text = f' и отнимает {attack_damage}➕{attack_text}. '
+            defend_text = ''
+
+            if defend_skill:
+                actions = defend_skill['actions']
+                attack_repelling = actions.get('attack_repelling', False)
+                hp_multiplicator = actions.get('health_points_multiplicator',
+                                               1)
+                contrattack = actions.get('contrattack')
+
+                if attack_repelling:
+                    attack_damage = 0
+                    damage_text = ''
+                    defend_text = f', но защищающийся {defend_skill["name"]}. '
+
+                if contrattack:
+                    defend_base_damage = defend.get_damage_points(attack)
+                    defend_text += (f'Защищайщийся провел успешную контратаку.'
+                                    f' Урон составил {defend_base_damage}➕')
+                    attack.decrease_health_points(defend_base_damage)
+
+                if hp_multiplicator != 1 and \
+                        defend.decrease_health_points(
+                            attack_damage, fake_launch=True) > 0:
+                    defend_hp_delta = defend.multiplicate_health_points(
+                        hp_multiplicator)
+                    defend_text += (f'Защищающийся {defend_skill["name"]}. '
+                                    f'Прибавил {defend_hp_delta}➕. ')
 
             defend.decrease_health_points(attack_damage)
 
-            text = base_text + damage_text
+            text = base_text + damage_text + defend_text
             console.write_message_with_delay_after(text, long_delay=False)
 
             dead_warrior = None
@@ -344,5 +401,6 @@ class Game:
                 console.write_message_with_delay_after(
                     f'💀 {dead_warrior.name} повержен!', long_delay=True)
 
-        print(f'🏆 {self.warriors[0].name} вышел победителем из этой жестокой '
-              f'битвы')
+        winner = self.warriors[0]
+        print(f'🏆 {winner.name} вышел победителем из этой жестокой '
+              f'битвы c {winner.total_health_points()}➕')
