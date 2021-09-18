@@ -74,7 +74,7 @@ def choice_class(person: Person, needed_class):
     return needed_class(
         name = person.name,
         hp = person.hp,
-        base_atack=person.atack,
+        base_damage=person.damage,
         base_protection=person.protection
     )
 # def pars_players(players:Dict) -> Dict:

@@ -37,13 +37,13 @@ if __name__ == '__main__':
         name = choice(NAMES)
         NAMES.remove(name)
         hp = randint(20, 100)
-        base_atack  = randint(2,15)
+        base_damage  = randint(2,15)
         base_protection  = randint(2,15)
         players.append(
             {
                 'name': name,
                 'hp': hp,
-                'base_atack': base_atack,
+                'base_damage': base_damage,
                 'base_protection': base_protection
             }
         )
@@ -51,8 +51,8 @@ if __name__ == '__main__':
     persones = []
     for player in players:
         #print(player)
-        name, hp , base_atack, base_protection = player.values()
-        tmp = Person(name, hp , base_atack, base_protection)
+        name, hp , base_damage, base_protection = player.values()
+        tmp = Person(name, hp , base_damage, base_protection)
         rand = randint(1,4)
         if rand == 1:
             tmp = choice_class(tmp, Paladin)

@@ -85,6 +85,16 @@
             "crit": 20,
             "pinetra": 0,
             "resistace": 4
+        },
+        {
+            "name": "ЗНАК_ПАМЯТИ_ПРЕДКАМ",
+            "protection": 5,
+            "damage": 5,
+            "add_hp": 20,
+            "precision": 10,
+            "crit": 10,
+            "pinetra": 15,
+            "resistace": 10
         }
     ],
     "alliance_items":
@@ -93,9 +103,9 @@
             "name": "СВЯЩЕННАЯ_РУКОПИСЬ_АЛЬЯНСА",
             "protection": 10,
             "damage": 2,
-            "add_hp": 20,
+            "add_hp": 2,
             "precision": 15,
-            "crit": 20,
+            "crit": 10,
             "pinetra": 3,
             "resistace": 3
         },

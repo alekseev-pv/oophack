@@ -7,8 +7,8 @@ MIN_PCT = 1
 MAX_PCT = 100
 MIN_BASE_HP = 20
 MAX_BASE_HP = 100
-MAX_BASE_ATACK = MAX_BASE_PROTECTION = 15
-MIN_BASE_ATACK = MIN_BASE_PROTECTION = 2
+MAX_BASE_DAMAGE = MAX_BASE_PROTECTION = 15
+MIN_BASE_DAMAGE = MIN_BASE_PROTECTION = 2
 BASE_PRECISION = BASE_CRIT = 10
 class Person:
     ''' Персонаж'''
@@ -17,15 +17,15 @@ class Person:
         name: str,
         hp: int,
         # Знаю, я тут напортачил что то с названием))
-        base_atack: int,
+        base_damage: int,
         base_protection: int, 
     ):
         assert hp in range(MIN_BASE_HP, MAX_BASE_HP+1), f'Базовое HP должно быть от {MIN_BASE_HP} до {MAX_BASE_HP}, имеем {hp}'
-        assert base_atack in range(MIN_BASE_ATACK, MAX_BASE_ATACK+1), f'Базовый урон должно быть от {MIN_BASE_ATACK} до {MAX_BASE_ATACK}'
+        assert base_damage in range(MIN_BASE_DAMAGE, MAX_BASE_DAMAGE+1), f'Базовый урон должно быть от {MIN_BASE_DAMAGE} до {MAX_BASE_DAMAGE}'
         assert base_protection in range(MIN_BASE_PROTECTION, MAX_BASE_PROTECTION+1), f'Базовая защита должна быть от {MIN_BASE_PROTECTION} до {MAX_BASE_PROTECTION}'
         self.name = name
         self.hp = hp
-        self.atack = base_atack
+        self.damage = base_damage
         self.protection = base_protection 
         self.precision = BASE_PRECISION
         self.crit = BASE_CRIT
@@ -43,7 +43,7 @@ class Person:
             print(thing)
             self.items.append(thing.name)
             self.hp += thing.add_hp
-            self.atack += thing.damage
+            self.damage += thing.damage
             self.protection += thing.protection
             self.precision += thing.precision
             self.crit += thing.crit
@@ -55,7 +55,7 @@ class Person:
             f'Экипированы: {" ,".join(self.items)}\n'
             f'Теперь у персонажа {self.name}:\n'
             f'HP = {self.hp}\n'
-            f'Atack = {self.atack}\n'
+            f'Atack = {self.damage}\n'
             f'Protection = {self.protection}\n'
             f'Precision (меткость) = {self.precision}\n'
             f'Crit = {self.crit}\n'
@@ -74,7 +74,7 @@ class Person:
 
     def attack(self, enemy: 'Person'):
         print(f'{self} атакует {enemy}!')
-        damage = int(self.shoot(self.precision, self.atack) * (1 + (self.crit/MAX_PCT)))
+        damage = int(self.shoot(self.precision, self.damage) * (1 + (self.crit/MAX_PCT)))
         enemy.take_damage(self, damage)
 
     def take_damage(self, enemy: 'Person', damage: int, mage_spell: bool = False):
@@ -88,8 +88,8 @@ class Person:
                 print(f'{self} получил {tmp} урона! Это магический спэл, он не промахивается!')
         else:
             if damage > 0:
-                tmp = int(damage * (self.protection / 100))
-                print(f'{self} получил {tmp} урона! АБСООООРБ!\n')
+                tmp = int(damage * (1 - self.protection / 100))
+                print(f'{self} получил {tmp} урона! АБСОРБ - {self.protection}%!\n')
             else:
                 print(f'{enemy} промахнулся!')
         self.hp -= tmp
