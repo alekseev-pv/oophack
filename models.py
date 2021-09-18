@@ -1,4 +1,4 @@
-CHARACHTERS = [
+CHARACTERS = [
     {
         'name': 'Darrow',
         'hp': 100,

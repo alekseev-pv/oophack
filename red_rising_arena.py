@@ -1,5 +1,5 @@
 from __future__ import annotations
-from models import CHARACHTERS
+from models import CHARACTERS
 import random
 
 
@@ -40,7 +40,7 @@ class Gold(Person):
         self.attack = attack * 2
 
 
-for person in CHARACHTERS:
+for person in CHARACTERS:
     if person['fraction'] == 'gold':
         gold = Gold(
             person['hp'],
