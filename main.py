@@ -1,6 +1,6 @@
 from __future__ import annotations
 import random
-from typing import Any, List
+from typing import Union, List
 
 from equipment import equipments, Dagger, Sword, Chest, Shield
 
@@ -28,7 +28,7 @@ class Paladin(Person):
 
         super().__init__(name, *args, **kwargs)
 
-    def equip(self, equipment: List[Any[Dagger, Sword, Chest, Shield]]) -> None:
+    def equip(self, equipment: List[Union[Dagger, Sword, Chest, Shield]]) -> None:
         # paladin cant wear dagger
         if isinstance(equipment, Dagger):
             print(f'{self.name} вертит в руке {equipment.name}: что за хренатень?! как я должен использовать эту штуку?!?!')
@@ -67,7 +67,7 @@ class Warrior(Person):
         self.crit_chance: float = 0
         super().__init__(name, *args, **kwargs)
 
-    def equip(self, equipment: List[Any[Dagger, Sword, Chest, Shield]]) -> None:
+    def equip(self, equipment: Union[Dagger, Sword, Chest, Shield]) -> None:
         if isinstance(equipment, Dagger) and self.dagger == 0 and self.sword == 0:
             print(f'{self.name} поднимает {equipment.name}: хотелось бы что-то помассивнее... но сойдет и это')
             self.dagger = 1
@@ -109,7 +109,7 @@ class Rogue(Person):
         self.crit_chance: float = 0
         super().__init__(name, *args, **kwargs)
 
-    def equip(self, equipment: List[Any[Dagger, Sword, Chest, Shield]]) -> None:
+    def equip(self, equipment: List[Union[Dagger, Sword, Chest, Shield]]) -> None:
         if isinstance(equipment, Dagger) and self.dagger == 0 and self.sword == 0:
             if {equipment.name} == 'Вилка':
                 print(f'{self.name} поднимает {equipment.name}: отлично! один удар - четыре дырки...')
@@ -141,16 +141,17 @@ class Rogue(Person):
 
 class Arena:
 
-    def __init__(self, equipments: List[Any[Dagger, Sword, Chest, Shield]],
-                 characters: List[Any[Warrior, Rogue, Paladin]]) -> None:
-        self.characters: List[Any[Warrior, Rogue, Paladin]] = characters
-        self.equipments: List[Any[Dagger, Sword, Chest, Shield]] = equipments
+    def __init__(self, equipments: List[Union[Dagger, Sword, Chest, Shield]],
+                 characters: List[Union[Warrior, Rogue, Paladin]]) -> None:
+        self.characters: List[Union[Warrior, Rogue, Paladin]] = characters
+        self.equipments: List[Union[Dagger, Sword, Chest, Shield]] = equipments
 
     def dress_up_characters(self) -> None:
-        equipments: List[Any[Dagger, Sword, Chest, Shield]] = self.equipments[:]
+        equipments: List[Union[Dagger, Sword, Chest, Shield]] = self.equipments[:]
         equipment_count: int = len(self.equipments)
         i: int = 0
         for character in self.characters:
+            equipped: list = []
             while i != 4:
                 equipment_index = random.randint(0, equipment_count - 1)
                 character.equip(equipments[equipment_index])
