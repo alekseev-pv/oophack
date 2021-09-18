@@ -2,6 +2,7 @@ import colorama
 import names
 import random
 
+
 from colorama import Back, Fore, Style
 
 
@@ -138,12 +139,12 @@ class Game():
     def battle(self, first_warrior, second_warrior):
         colorama.init()
         print(Back.GREEN + Fore.YELLOW + f'Бой между {first_warrior.name} и '
-              f'{second_warrior.name} начинается!')
+              f'{second_warrior.name} начинается!' + Style.RESET_ALL)
         print(Style.RESET_ALL)
         first_warrior.hp = 100
         second_warrior.hp = 100
         while True:
-            print(f'{first_warrior.name} здоровья: '
+            print(Fore.YELLOW + f'{first_warrior.name} здоровья: '
                   f'{round(first_warrior.hp,2)}')
             print(f'{second_warrior.name} здоровья: '
                   f'{round(second_warrior.hp,2)}')
