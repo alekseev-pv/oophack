@@ -10,7 +10,7 @@ MAX_ADD_HP = 20
 
 class Thing:
     ''' Всякий инвентарь'''
-    def __init__(self, name: str, protection: int, damage: int, add_hp: int, precision: int, crit: int):
+    def __init__(self, name: str, protection: int, damage: int, add_hp: int, precision: int, crit: int, pinetra: int, resistance: int):
         assert ONE <= protection <= MAX_PROTECTION, f'Защита не более {MAX_PROTECTION}'
         assert ONE <= damage <= MAX_ATACK, f'Атака не более {MAX_ATACK}'
         assert ONE <= add_hp <= MAX_ADD_HP, f'Добавляем не более {MAX_ADD_HP} HP'
@@ -22,6 +22,8 @@ class Thing:
         self.add_hp = add_hp
         self.precision = precision
         self.crit = crit
+        self.pinetra = pinetra
+        self.resistanse = resistance
 
     def __str__(self) -> str:
         return f'Экипировано {self.name}!'
@@ -35,7 +37,7 @@ def parse_gear(gears: Dict) -> Dict:
             gears_dict[status] = []
         for gear in gears:
             # ВАЖНЫЙ МОМЕНТ!
-            name, protection, damage, add_hp, precision, crit = gear.values()
-            tmp = Thing(name, protection, damage, add_hp, precision, crit)
+            name, protection, damage, add_hp, precision, crit, pinetra, resistace = gear.values()
+            tmp = Thing(name, protection, damage, add_hp, precision, crit, pinetra, resistace)
             gears_dict[status].append(tmp)
     return gears_dict

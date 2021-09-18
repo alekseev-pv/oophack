@@ -7,7 +7,9 @@
             "damage": 7,
             "add_hp": 10,
             "precision": 12,
-            "crit": 5
+            "crit": 5,
+            "pinetra": 6,
+            "resistace": 2
         },
         {
             "name": "Кольцо_CRIT_DAMAGE",
@@ -15,7 +17,9 @@
             "damage": 10,
             "add_hp": 1,
             "precision": 1,
-            "crit": 20
+            "crit": 20,
+            "pinetra": 10,
+            "resistace": 0
         },
         {
             "name": "Кольцо_BIG_precision",
@@ -23,7 +27,9 @@
             "damage": 10,
             "add_hp": 1,
             "precision": 20,
-            "crit": 1
+            "crit": 1,
+            "pinetra": 0,
+            "resistace": 0
         },
         {
             "name": "Шапка_Устойчивости",
@@ -31,7 +37,9 @@
             "damage": 1,
             "add_hp": 20,
             "precision": 1,
-            "crit": 1
+            "crit": 1,
+            "pinetra": 0,
+            "resistace": 10
         },
         {
             "name": "ИМБО_АЙТЕМ",
@@ -39,7 +47,9 @@
             "damage": 10,
             "add_hp": 20,
             "precision": 20,
-            "crit": 20
+            "crit": 20,
+            "pinetra": 10,
+            "resistace": 10
         },
         {
             "name": "ДНО_АЙТЕМ",
@@ -47,7 +57,9 @@
             "damage": 1,
             "add_hp": 1,
             "precision": 1,
-            "crit": 1
+            "crit": 1,
+            "pinetra": 0,
+            "resistace": 0
         },
         {
             "name": "МИД_АЙТЕМ",
@@ -55,7 +67,9 @@
             "damage": 5,
             "add_hp": 10,
             "precision": 10,
-            "crit": 10
+            "crit": 10,
+            "pinetra": 3,
+            "resistace": 3
         }
 
 
@@ -68,7 +82,9 @@
             "damage": 10,
             "add_hp": 5,
             "precision": 10,
-            "crit": 20
+            "crit": 20,
+            "pinetra": 0,
+            "resistace": 4
         }
     ],
     "alliance_items":
@@ -79,7 +95,9 @@
             "damage": 2,
             "add_hp": 20,
             "precision": 15,
-            "crit": 20
+            "crit": 20,
+            "pinetra": 3,
+            "resistace": 3
         },
         {
             "name": "РАЗЯЩИЙ_МЕЧ_АЛЬЯНСА",
@@ -87,7 +105,9 @@
             "damage": 20,
             "add_hp": 1,
             "precision": 1,
-            "crit": 1
+            "crit": 1,
+            "pinetra": 0,
+            "resistace": 0
         }
     ]
 

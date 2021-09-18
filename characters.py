@@ -16,10 +16,11 @@ class Person:
         self,
         name: str,
         hp: int,
+        # Знаю, я тут напортачил что то с названием))
         base_atack: int,
         base_protection: int, 
     ):
-        assert hp in range(MIN_BASE_HP, MAX_BASE_HP+1), f'Базовое HP должно быть от {MAX_BASE_HP} до {MAX_BASE_HP}'
+        assert hp in range(MIN_BASE_HP, MAX_BASE_HP+1), f'Базовое HP должно быть от {MIN_BASE_HP} до {MAX_BASE_HP}, имеем {hp}'
         assert base_atack in range(MIN_BASE_ATACK, MAX_BASE_ATACK+1), f'Базовый урон должно быть от {MIN_BASE_ATACK} до {MAX_BASE_ATACK}'
         assert base_protection in range(MIN_BASE_PROTECTION, MAX_BASE_PROTECTION+1), f'Базовая защита должна быть от {MIN_BASE_PROTECTION} до {MAX_BASE_PROTECTION}'
         self.name = name
@@ -28,6 +29,8 @@ class Person:
         self.protection = base_protection 
         self.precision = BASE_PRECISION
         self.crit = BASE_CRIT
+        self.pinetra = 0
+        self.resistance = 0
         if self.__class__.__name__ == 'Person':
             print(f'На арене появился - {self.name}!')
 
@@ -44,6 +47,8 @@ class Person:
             self.protection += thing.protection
             self.precision += thing.precision
             self.crit += thing.crit
+            self.pinetra += thing.pinetra
+            self.resistance += thing.resistanse
         return (
             f'____________________________\n'
             f'ЭКИПИРОВКА ЗАКОНЧЕНА!\n\n'
@@ -54,6 +59,8 @@ class Person:
             f'Protection = {self.protection}\n'
             f'Precision (меткость) = {self.precision}\n'
             f'Crit = {self.crit}\n'
+            f'Pinetra = {self.pinetra}\n'
+            f'Resistance = {self.resistance}\n'
         )
     def __str__(self) -> str:
         return f'{self.__class__.__name__} {self.name}'
@@ -65,17 +72,26 @@ class Person:
         else:
             return 0
 
-    def attack(self, enemy: 'Person') -> int:
+    def attack(self, enemy: 'Person'):
         print(f'{self} атакует {enemy}!')
         damage = int(self.shoot(self.precision, self.atack) * (1 + (self.crit/MAX_PCT)))
         enemy.take_damage(self, damage)
 
-    def take_damage(self, enemy: 'Person', damage: int ) -> int:
+    def take_damage(self, enemy: 'Person', damage: int, mage_spell: bool = False):
         print(f'{enemy} бьет {self}! Входящий урон {damage}\n')
         tmp = 0
-        if damage > 0:
-            tmp = int(damage * (self.protection / 100))
-        print(f'{self} получил {tmp} урона! АБСООООРБ!\n')
+        if mage_spell:
+            if self.resistance > enemy.pinetra:
+                print(f'Как жаль, {enemy} не хватило пинетры ({enemy.pinetra})... у {self} - {self.resistance} ед сопротивления магическим заклинаниям.')
+            else:
+                tmp = damage
+                print(f'{self} получил {tmp} урона! Это магический спэл, он не промахивается!')
+        else:
+            if damage > 0:
+                tmp = int(damage * (self.protection / 100))
+                print(f'{self} получил {tmp} урона! АБСООООРБ!\n')
+            else:
+                print(f'{enemy} промахнулся!')
         self.hp -= tmp
         if self.hp < 1:
             print (f'У {self} осталось 0 HP\n')

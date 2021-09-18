@@ -1,6 +1,6 @@
 from war import choice_class
 from characters import Person
-from classes import Paladin, Shaman
+from classes import Paladin, Shaman, Mage, Warloc
 from war import fight, take_on_gear
 from gear import Thing, parse_gear
 import json
@@ -53,9 +53,13 @@ if __name__ == '__main__':
         #print(player)
         name, hp , base_atack, base_protection = player.values()
         tmp = Person(name, hp , base_atack, base_protection)
-        rand = randint(1,2)
+        rand = randint(1,4)
         if rand == 1:
             tmp = choice_class(tmp, Paladin)
+        elif rand == 2:
+            tmp = choice_class(tmp, Warloc)
+        elif rand == 3:
+            tmp = choice_class(tmp, Mage)
         else:
             tmp = choice_class(tmp, Shaman)
         take_on_gear(tmp, gears_dict)
@@ -65,10 +69,10 @@ if __name__ == '__main__':
     while True:
         players_fight = sample(persones, k=2)
         to_delete = fight(players_fight[0], players_fight[1])
-        print(f'{to_delete} покидает турнир!')
-        print(len(persones))
+        print(f'{to_delete} покидает турнир!\n\n')
+        #print(len(persones))
         persones.remove(to_delete)
-        print(len(persones))
+        #print(len(persones))
         if len(persones) == 1:
             print(f'Победил: {persones[0]}')
             break
