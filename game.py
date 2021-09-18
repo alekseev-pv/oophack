@@ -1,153 +1,95 @@
-import random
+from colorama import Fore, Style
+import time
 
-CHAR_NAME_LIST = [i for i in range(1, 21)]
+import sys
 
-THINGS_NAMES = ['кольцо', 'посох', 'волшебная палочка', 'плащ', 'посох']
-
-
-class Thing:
-    def __init__(self, name, defence, attack, hp):
-        self.name = name
-        self.defence = defence
-        self.attack = attack
-        self.lives = hp
-
-    @property
-    def defence(self):
-        return self._defence
-
-    @defence.setter
-    def defence(self, value):
-        if value > 0.1:
-            raise ValueError('Защита не может быть больше 10')
-        else:
-            self._defence = value
+from arena import Arena
+from things import Thing
 
 
-class Person:
-    def __init__(self, name, hp, base_attack, base_defence, things):
-        self.name = name
-        self.base_attack = base_attack
-        self.base_defence = base_defence
-        self.hp = hp
-        self.things = things
+class Menu:
+    """Представление меню."""
 
-    def set_things(self, thing_inst):
-        self.things.append(thing_inst)
+    def __init__(self, arena):
+        self.arena = arena()
+        self.choices = {
+            '1': self.run_game,
+            '2': self.exit
+        }
 
-    def get_final_attack(self):
-        attack_damage = self.base_attack
-        if self.things:
-            for thing in self.things:
-                attack_damage += thing.attack
-        return attack_damage
+    def display_menu(self):
+        """Метод выводит на экран меню."""
+        print('Добро пожаловть в игру!')
+        print('Нажми ' + Fore.BLUE + '1' + Style.RESET_ALL +
+              ' чтобы начать игру')
+        print('Нажмите ' + Fore.CYAN + '2' + Style.RESET_ALL + ' чтобы выйти')
+        print()
 
-    def get_final_defence(self):
-        defence = self.base_defence
-        if self.things:
-            for thing in self.things:
-                defence += thing.defence
-        return defence
+    def start(self):
+        """Метод запускает меню."""
+        while True:
+            self.display_menu()
+            choice = input(f'{Fore.BLUE}Выберите вариант{Style.RESET_ALL}  ')
+            action = self.choices.get(choice)
+            if action:
+                action()
+            else:
+                print(f'{Fore.RED}Неверный ввод {choice}{Style.RESET_ALL}')
 
+    def run_game(self):
+        """Метод запускает игру."""
+        active = True
+        self.arena.generate_random_thing(Thing)
+        self.arena.player_set_up()
+        self.arena.generate_characters_for_computer(['warrior', 'paladin', 'dwarf'])
 
-class Paladin(Person):
-    def __init__(self, name, hp, base_attack, base_defence, things):
-        super().__init__(name, hp * 2, base_attack, base_defence * 2, things)
+        while active:
 
+            self.arena.print_players_team()
+            print(f'{Fore.RED}Вы атакуете!{Style.RESET_ALL}')
 
-class Warrior(Person):
-    def __init__(self, name, hp, base_attack, base_defence, things):
-        super().__init__(name, hp, base_attack * 2, base_defence, things)
+            attacker_index = self.arena.read_user_character_input() - 1
+            attacker = self.arena.team1[attacker_index]
+            defender = self.arena.team2.pop(
+                self.arena.get_index_of_character_with_maximum_attribute('final_defence'))
+            self.arena.game_round(attacker, defender)
+            time.sleep(2)
+            if defender.hp > 0:
+                self.arena.team2.append(defender)
+            else:
+                print(f'{Fore.RED}Вы убили{Style.RESET_ALL} {defender.name}!')
+                time.sleep(2)
+            if self.arena.is_over():
+                active = False
+                time.sleep(2)
+                continue
 
+            attacker = self.arena.team2.pop((
+                self.arena.get_index_of_character_with_maximum_attribute('final_attack')))
+            self.arena.print_players_team()
 
-class Arena:
-    def __init__(self):
-        self.team1 = []
-        self.team2 = []
-        self.things = []
+            print(f'{Fore.GREEN}Теперь вы защищаетесь!{Style.RESET_ALL}')
+            defender_index = self.arena.read_user_character_input() - 1
+            defender = self.arena.team1.pop(defender_index)
 
-    def _add_to_team1(self, obj):
-        self.team1.append(obj)
+            self.arena.game_round(attacker, defender)
+            time.sleep(2)
+            if defender.hp > 0:
+                self.arena.team1.append(defender)
+            else:
+                print(f'{Fore.RED}Ващего персонажа {Style.RESET_ALL}{defender.name} убили!')
+                time.sleep(2)
+            if self.arena.is_over():
+                active = False
 
-    def _add_to_team2(self, obj):
-        self.team2.append(obj)
-
-    def _generate_random_character(self, available_characters_list):
-        char = random.choice(available_characters_list)
-        things = []
-        if self.things:
-            things = random.choices(self.things, k=random.randint(0, 4))
-        new_char = char(
-            name=random.choice(CHAR_NAME_LIST),
-            hp=100,
-            base_attack=random.randint(1, 10),
-            base_defence=random.uniform(0.01, 0.3),
-            things=things
-        )
-        return new_char
-
-    def generate_random_thing(self, Thing):
-        for _ in range(random.randint(1, 100)):
-            new_thing = Thing(
-                name=random.choice(THINGS_NAMES),
-                defence=random.uniform(0.001, 0.1),
-                attack=random.randint(0, 3),
-                hp=1
-            )
-            self.things.append(new_thing)
-
-    def generate_characters(self, available_characters_list):
-        for _ in range(10):
-            new_char = self._generate_random_character(
-                available_characters_list)
-            self._add_to_team1(new_char)
-        for _ in range(10):
-            new_char = self._generate_random_character(
-                available_characters_list)
-            self._add_to_team2(new_char)
-
-    def game_round(self, attacker, defender):
-        attack_damage = attacker.get_final_attack()
-        final_defence = defender.get_final_defence()
-        final_damage = attack_damage - attack_damage * final_defence
-        final_damage = round(final_damage, 2)
-        defender.hp -= final_damage
-        print(
-            f'Персонаж {attacker.name} наносит урон {final_damage} персонажу {defender.name}')
-
-    def is_over(self):
-        if not self.team1:
-            print('Победа за командой 2')
-            return True
-        if not self.team2:
-            print('Победа за командой 1')
-            return True
-        return False
-
-
-
+    def exit(self):
+        sys.exit(1)
 
 
 def main():
-    active = True
-    arena = Arena()
-    arena.generate_random_thing(Thing)
-    arena.generate_characters([Warrior, Paladin])
-    while active:
-        attacker = random.choice(arena.team1)
-        defender = arena.team2.pop(random.randint(0, len(arena.team2) - 1))
-        arena.game_round(attacker, defender)
-        if defender.hp > 0:
-            arena.team2.append(defender)
-        if arena.is_over():
-            break
-        attacker = random.choice(arena.team2)
-        defender = arena.team1.pop(random.randint(0, len(arena.team1) - 1))
-        arena.game_round(attacker, defender)
-        if defender.hp > 0:
-            arena.team1.append(defender)
-        if arena.is_over():
-            break
+    menu = Menu(arena=Arena)
+
+    menu.start()
 
 
 if __name__ == '__main__':
