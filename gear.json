@@ -40,7 +40,17 @@
             "add_hp": 1,
             "precision": 1,
             "crit": 1
+        },
+        {
+            "name": "МИД_АЙТЕМ",
+            "protection": 5,
+            "damage": 5,
+            "add_hp": 10,
+            "precision": 10,
+            "crit": 10
         }
+
+
     ],
     "horde_items":
     [

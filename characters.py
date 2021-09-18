@@ -36,6 +36,7 @@ class Person:
         print('НАДЕТЬ СНАЯРЖЕНИЕ!')
         print(f'____________________________')
         for thing in set_things:
+            #sleep(1)
             print(thing)
             self.items.append(thing.name)
             self.hp += thing.add_hp
@@ -43,7 +44,6 @@ class Person:
             self.protection += thing.protection
             self.precision += thing.precision
             self.crit += thing.crit
-            sleep(0.5)
         return (
             f'____________________________\n'
             f'ЭКИПИРОВКА ЗАКОНЧЕНА!\n\n'
@@ -59,22 +59,22 @@ class Person:
         return f'{self.__class__.__name__} {self.name}'
 
     def shoot(self, precision: int, damage: int) -> int:
-        tmp = randint(MIN_PCT, MAX_PCT)
-        if precision in range(MIN_PCT, tmp):
+        tmp = randint(BASE_PRECISION, BASE_PRECISION*3)
+        if precision >= tmp:
             return damage
         else:
             return 0
 
     def attack(self, enemy: 'Person') -> int:
         print(f'{self} атакует {enemy}!')
-        damage = self.shoot(self.precision, self.atack) * (1 + (self.crit/MAX_PCT))
+        damage = int(self.shoot(self.precision, self.atack) * (1 + (self.crit/MAX_PCT)))
         enemy.take_damage(self, damage)
 
     def take_damage(self, enemy: 'Person', damage: int ) -> int:
         print(f'{enemy} бьет {self}! Входящий урон {damage}\n')
         tmp = 0
         if damage > 0:
-            tmp = damage * (self.protection / 100)
+            tmp = int(damage * (self.protection / 100))
         print(f'{self} получил {tmp} урона! АБСООООРБ!\n')
         self.hp -= tmp
         if self.hp < 1:
