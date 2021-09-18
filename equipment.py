@@ -1,4 +1,4 @@
-__all__ = ['equipments']
+__all__ = ['equipments', 'Dagger', 'Sword', 'Chest', 'Shield']
 
 class Armor:
 
