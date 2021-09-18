@@ -342,6 +342,19 @@ class Game:
                                                long_delay=True)
         self.__gear_up_warriors()
 
+        print()
+        console.write_message_with_delay_after('Воины готовы:',
+                                               long_delay=False)
+        for warrior in self.warriors:
+            gear = ', '.join(
+                [f'{Fore.GREEN}{thing.name}{Fore.RESET}'
+                 for thing in warrior.things])
+            console.write_message_with_delay_after(
+                (f'{Fore.BLUE}{warrior.name_with_rank()}{Fore.RESET} со '
+                 f'следующим снаряжением: \n{gear}'),
+                long_delay=False)
+        console.write_message_with_delay_after('', long_delay=True)
+
         console.write_message_with_delay_after('Да начнется битва!',
                                                long_delay=True)
         console.write_message('')

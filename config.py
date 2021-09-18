@@ -17,5 +17,5 @@ GENERAL_SETTINGS = {
     'WarriorsCount': 10,
     'GearInOneHand': (1, 4),
     'Delay': (2, 4),
-    'UseDelay': False,
+    'UseDelay': True,
 }
