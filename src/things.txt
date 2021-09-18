@@ -1,0 +1,22 @@
+#Name, hitpoints, protection, attack_attack_damage 
+Iron Branch, 1, 0.01, 1
+Gauntlets of Strength, 2, 0, 2
+Slippers of Agility, 0, 0.02, 2
+Circlet, 0, 0.03, 0
+Band of Elvenskin, 0, 0.03, 5
+Belt of Strength, 5, 0, 5
+Crown, 5, 0.03, 5
+Robe of the Magi, 0, 0.05, 0
+Blade of Alacrity, 0, 0.05, 10
+Ogre Axe, 10, 0, 10
+Ring of Health, 7, 0, 0
+Vitality Booster, 15, 0, 0
+Talisman of Evasion, 0, 0.07, 0
+Platemail, 0, 0.1, 0
+Hyperstone, 0, 0, 10
+Ultimate Orb, 10, 0.06, 10
+Demon Edge, 0, 0, 15
+Eaglesong, 0, 0.08, 15
+Mystic Staff, 0, 0, 15
+Reaver, 25, 0, 25
+Sacred Relic, 0, 0, 35

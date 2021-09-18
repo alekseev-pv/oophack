@@ -7,9 +7,14 @@
 
 """
 
-from colorama import init, Fore
+from colorama import init
 
+from functions import arena, create_heroes, create_things, dress_heroes
 
 if __name__ == "__main__":
-    print(Fore.GREEN + 'test')
-    print(Fore.RED + 'loss')
+    init()
+
+    things = create_things()
+    heroes = create_heroes()
+    dress_heroes(heroes, things)
+    arena(heroes)

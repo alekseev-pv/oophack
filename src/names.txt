@@ -1,0 +1,69 @@
+Abaddon
+Axe
+Brewmaster
+Chaos Knight
+Dawnbreaker
+Doom
+Dragon Knight
+Earthshaker
+Elder Titan
+Huskar
+Io
+Kunkka
+Legion Commander
+Lifestealer
+Lycan
+Magnus
+Mars
+Night Stalker
+Omniknight
+Pudge
+Sand King
+Slardar
+Snapfire
+Spirit Breaker
+Sven
+Tidehunter
+Timbersaw
+Tiny
+Treant Protector
+Tusk
+Underlord
+Wraith King
+Anti-Mage
+Arc Warden
+Bloodseeker
+Bounty Hunter
+Broodmother
+Clinkz
+Drow Ranger
+Ember Spirit
+Faceless Void
+Gyrocopter
+Hoodwink
+Juggernaut
+Lone Druid
+Luna
+Medusa
+Meepo
+Mirana
+Monkey King
+Morphling
+Naga Siren
+Nyx Assassin
+Pangolier
+Phantom Assassin
+Phantom Lancer
+Razor
+Riki
+Shadow Fiend
+Slark
+Sniper
+Spectre
+Templar Assassin
+Terrorblade
+Troll Warlord
+Ursa
+Vengeful Spirit
+Venomancer
+Viper
