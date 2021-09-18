@@ -48,7 +48,7 @@ def battle(attacker, defender):
                  (defender.final_protection / 100)
         damage = round(damage, 2)
         print(f'{attacker} наносит удар по {defender} на {damage}')
-        defender.life = round(defender.life - (damage / 100), 4)
+        defender.get_hit(damage)
     return defender.life
 
 
@@ -62,12 +62,13 @@ def make_arena(heroes):
                     print(f'выбыл {defender}')
 
 
-all_heroes = dress_persons(
-    make_persons(10),
-    make_things(),
-)
+if __name__ == "__main__":
+    all_heroes = dress_persons(
+        make_persons(10),
+        make_things(),
+    )
 
-while len(all_heroes) > 1:
-    make_arena(all_heroes)
+    while len(all_heroes) > 1:
+        make_arena(all_heroes)
 
-print(f'Победитель: {all_heroes}')
+    print(f'Победитель: {all_heroes}')
