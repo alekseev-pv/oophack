@@ -1,6 +1,6 @@
 import unittest
 
-from game import Person, Thing
+from classes import Person, Thing
 
 
 class TestPerson(unittest.TestCase):
