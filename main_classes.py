@@ -1,4 +1,6 @@
 import random
+import time
+
 import colorama
 from colorama import Fore
 from abc import ABC
@@ -40,21 +42,26 @@ class Person(ABC):
     def hit(self, damage):
         if random.randint(0, 100) <= self.dodge:
             print(Fore.GREEN + f'{self.name} увернулся от удара')
+            time.sleep(0.25)
             return None
         if random.randint(0, 100) <= self.block:
             print(Fore.BLUE + f'{self.name} заблокировал удар')
+            time.sleep(0.25)
             return None
         strike_multiplier = (random.randint(50, 150) / 100)
         strike_power = round(damage * ((100 - self.armor) / 100)
                              * strike_multiplier)
         print(Fore.RED + f'силой {strike_power}')
+        time.sleep(0.25)
         self.health -= strike_power
         if self.health <= Person.death_health:
             print(Fore.LIGHTCYAN_EX +
                   f'{self.name} не может продолжать бой')
+            time.sleep(0.25)
         else:
             print(Fore.MAGENTA +
                   f'У {self.name} осталось {self.health} единиц здоровья')
+            time.sleep(0.25)
         return None
 
     def is_dead(self):

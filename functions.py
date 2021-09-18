@@ -1,4 +1,6 @@
 import random
+import time
+
 from colorama import Fore
 from names_library import CLASS, NAME, SURNAME
 from thing_library import THING_LIBRARY
@@ -33,10 +35,12 @@ def fight_table(fighters_list):
         new_fighter_list_1.append(winner)
     if len(new_fighter_list_1) > 2:
         print(Fore.LIGHTBLUE_EX + 'Следующий раунд!')
+        time.sleep(0.25)
         next_round = new_table(new_fighter_list_1)
         fight_table(next_round)
     else:
         print(Fore.CYAN + 'Последний бой!')
+        time.sleep(0.25)
         fighter_1 = new_fighter_list_1[0]
         fighter_2 = new_fighter_list_1[1]
         print(Fore.LIGHTYELLOW_EX + 'В бой вступают: '
@@ -44,6 +48,7 @@ def fight_table(fighters_list):
                                     f'{fighter_1.name} '
                                     f'и {fighter_2.name_class} '
                                     f'{fighter_2.name}')
+        time.sleep(0.25)
         while (fighter_1.health > 0) and (fighter_2.health > 0):
             print(Fore.RED + f'{fighter_1.name} наносит удар')
             fighter_2.hit(fighter_1.damage)
@@ -67,6 +72,7 @@ def fight_spot(fighter_spot: list):
                                 f'{fighter_1.name_class} '
                                 f'{fighter_1.name} '
           f'и {fighter_2.name_class} {fighter_2.name}')
+    time.sleep(0.25)
     while (fighter_1.health > 0) and (fighter_2.health > 0):
         print(Fore.RED + f'{fighter_1.name} наносит удар')
         fighter_2.hit(fighter_1.damage)
@@ -76,10 +82,12 @@ def fight_spot(fighter_spot: list):
     if fighter_1.health > 0:
         print(Fore.LIGHTGREEN_EX + f'{fighter_1.name_class} '
                                    f'{fighter_1.name} победил в схватке')
+        time.sleep(0.25)
         return fighter_1
     if fighter_2.health > 0:
         print(Fore.LIGHTGREEN_EX + f'{fighter_2.name_class} '
                                    f'{fighter_2.name} победил в схватке')
+        time.sleep(0.25)
         return fighter_2
 
 
