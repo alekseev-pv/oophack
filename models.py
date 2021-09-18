@@ -100,7 +100,7 @@ class Person:
                              sum(thing.__dict__["protect"] for thing in self.things))
 
     def is_alive(self):
-        return self.health > 0
+        return self.full_health > 0
 
     def get_things(self, things: list) -> None:
         self.things = things
@@ -108,7 +108,7 @@ class Person:
 
     def take_damage(self, attack_hero: object):
         attack_damage = attack_hero.full_attack
-        self.full_health - attack_damage * (1 - self.full_protect)
+        self.full_health -= attack_damage * (1 - self.full_protect/100)
         print(f"{attack_hero.name} наносит удар по "
               f"{self.name} на {attack_damage} урона")
 
@@ -163,8 +163,8 @@ class Battle:
             time.sleep(Battle.PRINT_PAUSE_HERO)
 
     def get_fighters(self):
-        first = self.heroes.pop(randint(0, len(self.heroes)))
-        second = self.heroes.pop(randint(0, len(self.heroes)))
+        first = self.heroes.pop(randint(0, len(self.heroes) - 1))
+        second = self.heroes.pop(randint(0, len(self.heroes) - 1))
         return [first, second]
 
     def add_things(self):
@@ -186,19 +186,19 @@ class Battle:
         first_hero, second_hero = fighters
         print(f"В бою № {count} сойдутся {first_hero} и {second_hero}.")
         while True:
-            first_attack_hero = fighters.pop(randint(0, 1))
-            second_attack_hero = fighters[0]
-            second_attack_hero.take_damage(first_attack_hero)
-            if not second_attack_hero.is_alive:
+            time.sleep(Battle.PRINT_PAUSE_HERO)
+            second_hero.take_damage(first_hero)
+            if not second_hero.is_alive():
                 break
-            first_attack_hero.take_damage(second_attack_hero)
-            if not first_attack_hero.is_alive:
+            time.sleep(Battle.PRINT_PAUSE_HERO)
+            first_hero.take_damage(second_hero)
+            if not first_hero.is_alive():
                 break
-            winner = first_hero if first_hero.is_alive else second_hero
-            print(f"В этом бою победил {winner.name}")
-
-
-
+        winner = first_hero if first_hero.is_alive() else second_hero
+        self.heroes.append(winner)
+        print(f"В бою №{count} победил {winner.name}")
+        self._beauti_line_print()
+        time.sleep(Battle.PRINT_PAUSE_HERO)
 
     def battle_prepare(self):
         self.add_heroes()
@@ -224,17 +224,21 @@ class Battle:
     def start_battle(self):
         print(f"{'Битва началась':^100}")
         self._beauti_line_print()
-        self.next_round = []
         count = 1
         while len(self.heroes) > 1:
             fighters = self.get_fighters()
             self.fight(fighters, count)
-
-
+            count += 1
+        winner = self.heroes[0]
+        self._beauti_line_print()
+        time.sleep(0.5)
+        print("В легендарной битве победил:")
+        self._beauti_line_print()
+        print(f"<<<{winner.name:^100}>>>")
 
 
 if __name__ == "__main__":
-    battle = Battle(count_heroes=10)
+    battle = Battle(count_heroes=5)
     battle.battle_intro()
     battle.start_battle()
 
