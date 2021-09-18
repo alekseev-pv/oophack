@@ -7,9 +7,9 @@ class TestPerson(unittest.TestCase):
     def setUp(self):
         things = [
             Thing(name='Pistol', defence_percent=0, attack_points=50,
-                  health_points=0),
+                  health_points=0, is_weapon=True, is_clothes=False),
             Thing(name='Helmet', defence_percent=10, attack_points=0,
-                  health_points=20)
+                  health_points=20, is_weapon=False, is_clothes=True)
         ]
 
         self.person_with_things = Person(

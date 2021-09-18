@@ -6,17 +6,24 @@ class Thing:
     - имя (name),
     - процент защиты (defence_percent),
     - количество атаки (attack_points),
-    - количество жизней (health_points)."""
+    - количество жизней (health_points),
+    - признак оружия (is_weapon),
+    - признак одежды (is_clothes)."""
     name: str
     defence_percent: int
     attack_points: float
     health_points: float
+    is_weapon: bool
+    is_clothes: bool
 
-    def __init__(self, name, defence_percent, attack_points, health_points):
+    def __init__(self, name, defence_percent, attack_points, health_points,
+                 is_weapon, is_clothes):
         self.name = name
         self.defence_percent = defence_percent
         self.attack_points = attack_points
         self.health_points = health_points
+        self.is_weapon = is_weapon
+        self.is_clothes = is_clothes
 
 
 class Person:
@@ -100,3 +107,10 @@ class Warrior(Person):
         super().__init__(name, defence_percent, attack_points, health_points)
 
         self.attack_points *= 2
+
+
+class Game:
+    """Класс процесса игры."""
+
+    def create_things(self):
+        pass
