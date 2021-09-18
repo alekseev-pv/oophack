@@ -1,5 +1,7 @@
 from random import choice, randint
 
+from colorama import Fore, Style
+
 """Описываем константы, управляющие классом Thing."""
 COUNT_THINGS = 40
 THINGS_NAME = ['Кольцо', 'Мундир', 'Перчатки', 'Шлем', 'Штаны', 'Ботинки',
@@ -130,13 +132,16 @@ for i in range(COUNT_PERSON):
 print()
 """Одеваем персонажей в случайные вещи."""
 for person in persons:
-    print(f'{person.class_name} "{person}": Здоровье - {person.hp}, '
+    print(f'{person.class_name}' + Fore.GREEN + f' "{person}" ' +
+          Style.RESET_ALL + f': Здоровье - {person.hp}, '
           f'Базовая атака - {person.base_attack}, '
           f'Базовая защита - {person.base_protection}')
     person.set_things(things, randint(MIN_THINGS_ON_PERSON,
                                       MAX_THINGS_ON_PERSON))
-    print(f'и теперь обладает: Здоровье - {person.hp}, '
-          f'Атака - {person.base_attack}, Защита - {person.base_protection}')
+    print('и теперь обладает: ' + Fore.GREEN +
+          f'Здоровье - {person.hp}, '
+          f'Атака - {person.base_attack}, Защита - {person.base_protection}'
+          + Style.RESET_ALL)
     print()
 """Битва. Принцип битвы: на каждом этапе выбирается два случайных персонажа,
    один - атакующий, второй - обороняющийся. Атакующий наносит урон, если
@@ -152,14 +157,18 @@ while len(persons) > 1:
     attacker = persons[attacker_index]
     defender = persons[defender_index]
     result = defender.after_damage(attacker.base_attack)
-    print(f'{attacker.class_name} "{attacker}" наносит {attacker.base_attack} '
-          f'урона по "{defender}" и отнимает {result[1]} жизни')
+    print(f'{attacker.class_name} "{attacker}" наносит ' +
+          Fore.RED + f'{attacker.base_attack} ' + Style.RESET_ALL +
+          f'урона по "{defender}" и отнимает ' + Fore.RED + f'{result[1]} ' +
+          Style.RESET_ALL + 'жизни')
     if result[0]:
         print(f'{defender.class_name} "{defender}" стойко переносит удар, у '
-              f'него осталось {defender.hp} здоровья')
+              f'него осталось ' +
+              Fore.YELLOW + f'{defender.hp} ' + Style.RESET_ALL + 'здоровья')
     else:
         persons.remove(defender)
-        print(f'{defender.class_name} "{defender}" погибает')
+        print(Fore.RED + f'{defender.class_name} "{defender}" погибает' +
+              Style.RESET_ALL)
     print()
-print(f'{persons[0].class_name} "{persons[0]}" побеждает, '
-      f'у него осталось {persons[0].hp} здоровья')
+print(Fore.GREEN + f'{persons[0].class_name} "{persons[0]}" побеждает, '
+      f'у него осталось {persons[0].hp} здоровья' + Style.RESET_ALL)
