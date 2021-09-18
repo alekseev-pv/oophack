@@ -33,7 +33,7 @@ THINGS_PRE_LIST = (
 # список имен персонажей (name, is_unique)
 PERSONS_PRE_LIST = (
     ('Дарт Вейдер', True),
-    ('Сенатор Палптаин', True),
+    ('Сенатор Палпатин', True),
     ('Реван', True),
     ('Оби-Ван Кеноби', True),
     ('Квай-Гон Джинн', True),
@@ -55,26 +55,48 @@ PERSONS_PRE_LIST = (
 )
 
 # скилы уникальных персонажей
-# name, is_attack, is_defence, attack_points_multiplicator,
-# health_points_multiplicator, defence_points_multiplicator,
-# uniq_skill, attack_repelling
+# name - текст скилла,
+# is_attack - выполняется во время атаки,
+# is_defence - выполняется во время защиты,
+# unique_skill - скил только для уникальных персонажей,
+# probability - вероятность выпадения скила
+# типы скилов:
+# attack_points_multiplicator - умножаем поинты атаки на это число (атака),
+# health_points_multiplicator - умножаем поинты здоровья на это число (защита),
+# defence_points_multiplicator - умножаем поинты защиты (защита),
+# attack_repelling - отражение атаки, здоровье не уменьшается (защита),
+# contrattack - контратака, защищающийся бьет атакующего (защита)
 PERSONS_SKILLS = (
     {
         'name': 'отбросил врага с помощью силы',
         'is_attack': True,
-        'uniq_skill': True,
-        'action': {'attack_points_multiplicator': 1.03}
+        'unique_skill': True,
+        'actions': {'attack_points_multiplicator': 1.03},
+        'probability': 0.05
+    },
+    {
+        'name': 'подбросил гранату',
+        'is_attack': True,
+        'actions': {'attack_points_multiplicator': 1.04},
+        'probability': 0.04
     },
     {
         'name': 'залечил рану',
         'is_defence': True,
-        'uniq_skill': True,
-        'action': {'health_points_multiplicator': 1.05}
+        'unique_skill': True,
+        'actions': {'health_points_multiplicator': 1.05},
+        'probability': 0.03
     },
     {
         'name': 'отразил удар врага',
         'is_defence': True,
-        'uniq_skill': False,
-        'action': {'attack_repelling': True}
+        'actions': {'attack_repelling': True},
+        'probability': 0.07
+    },
+    {
+        'name': 'увернулся от атаки и пульнул в ответ',
+        'is_defence': True,
+        'actions': {'attack_repelling': True, 'contrattack': True},
+        'probability': 0.02
     }
 )

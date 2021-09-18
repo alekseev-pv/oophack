@@ -10,3 +10,4 @@ if __name__ == '__main__':
         things_pre_list=config.presets.THINGS_PRE_LIST,
         persons_pre_list=config.presets.PERSONS_PRE_LIST,
         persons_skills=config.presets.PERSONS_SKILLS)
+    game.console_game_process()
