@@ -79,10 +79,10 @@ def equip_percs(percs, items, slow_time = 0):
         n_items = randint(1, 4)
         perc_wear = []
         for i in range(n_items):
-            item = choice(items)
-            while item in wear_list:
-                item = choice(items)
-            wear_list.append(item)
-            perc_wear.append(item)
-        perc.set_things(perc_wear)
+            if items:
+                shuffle(items)
+                item = items.pop()
+                wear_list.append(item)
+                perc_wear.append(item)
+            perc.set_things(perc_wear)
     print('Персонажы экипированы и готовы к бою!\n')
