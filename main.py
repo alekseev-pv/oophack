@@ -1,95 +1,102 @@
-from random import sample, choice, uniform, randint
+from random import sample
 
 from tabulate import tabulate
+import colorama
+from colorama import Fore
 
-from config import MAX_HP, NUMBER_PLAYERS
-from characters import all_player_names, CHARACTER_CLASSES
-from things import Thing, all_things
+from config import NUMBER_PLAYERS, SEPARATOR_LENGTH
+from characters import generate_players
 
-
-
-
-print('...звучит музыка...')
-print('Что наша жизнь? ИГРА!')
-print()
-print('*'*50)
-
-players = []
-player_names = sample(all_player_names, NUMBER_PLAYERS)
-for name in player_names:
-    player_class = choice(CHARACTER_CLASSES)
-    player = player_class(
-        name = name,
-        damage = uniform(0.05, 0.25) * MAX_HP,
-        protection = uniform(0.25, 1) * 0.25,
-        health_point = uniform(0.25, 1) * MAX_HP
-    )
-    player_things = sample(all_things, randint(1, 4))
-    player.set_things(player_things)
-    players.append(player)
+colorama.init(autoreset=True)
 
 
-print('За столом cегодня играют:')
-print()
+class Game():
 
-for player in players:
-    player_things = ', '.join([thing.title for thing in player.things])
-    print(f'Обладатель {player_things}')
-    print(f'{player.name}.')
-    print(f'(Атака {player.damage:.0f}, Защита {player.protection:.2f}, Здоровье {player.health_point:.0f}, {player.class_name})')
-    print()
-    print('*'*50)
+    def __init__(self):
+        self.players = generate_players()
+        self.graveyard = []
 
-graveyard = []
-
-for game_round in range(1, NUMBER_PLAYERS):
-    print('Играем до последнего знатока')
-    print(f'Счет 0 : {NUMBER_PLAYERS - len(players)}')
-    print(f'{game_round} раунд!')
-    print()
-
-    while True:
-        attacker, defender = sample(players, 2)
-        attack_damage = attacker.attack(defender)
-        print(f'{attacker.name} атакует {defender.name}'
-            f' и наносит ему {attack_damage:.0f} урона.'
-        )
-        if defender.is_alive:
-            print(f'{defender.name} выживает на {defender.health_point:.0f} хп.')
-        else:
-            graveyard.append(defender)
-            players.remove(defender)
-            print(f'К сожалению, {defender.name} не выдерживает и "покидает наш стол"')
-            break
+    def show_introduction(self):
         print()
-    print()
-    print('*'*50)
-    print()
-last_man_standing = players.pop()
-graveyard.append(last_man_standing)
-print('Сегодняшний победитель, единственный кто удержался за столом')
-print()
-print(f'{last_man_standing.name.upper()}')
-print()
-print('Звучит песня Тамары Гвердцители - Виват король')
-print()
+        print(f'{Fore.GREEN}Что? Где? Когда?  {Fore.RED}СМЕРТЕЛЬНАЯ БИТВА!')
+        print()
+        print('...звучит музыка...')
+        print(f'{Fore.CYAN}Что наша жизнь? ИГРА!')
+        print()
+        print(f'{Fore.YELLOW}За столом cегодня играют:')
+        print('*'*SEPARATOR_LENGTH)
+        print()
+
+        for player in self.players:
+            player_things = ', '.join([thing.title for thing in player.things])
+            print(f'Обладатель {Fore.BLUE}{player_things}')
+            print(f'{Fore.GREEN}{player.name}.')
+            print(f'(Атака {player.damage:.0f}, Защита {player.protection:.2f}'
+                  f', Здоровье {player.health_point:.0f}, {player.class_name})'
+                  )
+            print('*'*SEPARATOR_LENGTH)
+
+    def play_main_part(self):
+        for game_round in range(1, NUMBER_PLAYERS):
+            print(f'{Fore.YELLOW}Играем до последнего знатока')
+            print(f'{Fore.YELLOW}Счет 0 : {len(self.graveyard)}')
+            print(f'{Fore.YELLOW}{game_round} раунд!')
+            print()
+
+            while True:
+                attacker, defender = sample(self.players, 2)
+                attack_damage = attacker.attack(defender)
+                print(f'{Fore.GREEN}{attacker.name} {Fore.RESET}атакует '
+                      f'{Fore.GREEN}{defender.name}{Fore.RESET}'
+                      f' и наносит {Fore.RED}{attack_damage:.0f} урона.')
+                if defender.is_alive:
+                    print(f'{defender.name} выживает на '
+                          f'{defender.health_point:.0f} хп.')
+                else:
+                    self.graveyard.append(defender)
+                    self.players.remove(defender)
+                    print(f'К сожалению, {Fore.GREEN}{defender.name}'
+                          f'{Fore.RESET} не выдерживает и '
+                          f'{Fore.CYAN}"покидает наш стол"')
+                    break
+                print()
+            print()
+            print('*'*SEPARATOR_LENGTH)
+            print()
+        last_man_standing = self.players.pop()
+        self.graveyard.append(last_man_standing)
+        print('Сегодняшний победитель, единственный кто удержался за столом')
+        print()
+        print(f'{Fore.GREEN}{last_man_standing.name.upper()}')
+        print()
+        print(f'{Fore.CYAN}Звучит песня Тамары Гвердцители - Виват король')
+        print()
+
+    def print_final_state(self):
+        headers = ['Место', 'Игрок', 'Атака', 'Защита', 'Здоровье',
+                   'Урон нанесено', 'Урон полученно', 'Класс']
+        game_result = []
+        place = 0
+        for player in reversed(self.graveyard):
+            place += 1
+            game_result.append([
+                place,
+                player.name,
+                round(player.damage),
+                round(player.protection, 2),
+                round(player.init_health_point),
+                round(player.damage_dealt),
+                round(player.damage_taken),
+                player.class_name,
+            ])
+        print('По экрану проплывают результаты игры.')
+        print(tabulate(game_result, headers, tablefmt="grid"))
+
+    def run(self):
+        self.show_introduction()
+        self.play_main_part()
+        self.print_final_state()
 
 
-headers = ['Место','Игрок', 'Атака', 'Защита', 'Здоровье', 'Урон нанесено', 'Урон полученно', 'Класс']
-game_result = []
-place = 0
-for player in reversed(graveyard):
-    place += 1
-    game_result.append([
-        place,
-        player.name,
-        round(player.damage),
-        round(player.protection, 2),
-        round(player.init_health_point),
-        round(player.damage_dealt),
-        round(player.damage_taken),
-        player.class_name,
-        # ', '.join(thing.title for thing in player.things)
-    ])
-
-print(tabulate(game_result, headers, tablefmt="grid"))
+game = Game()
+game.run()
