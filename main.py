@@ -1,3 +1,4 @@
+from calendar import c
 from random import randrange, choice
 
 from characters import Paladin, Warrior
@@ -36,14 +37,18 @@ def generate_character(names):
     
 def generate_armor(names):
     armor_items = {}
+    i = 0
     for item in names:
-        armor_items[item] = Thing(item,randrange(0,200),None,randrange(0,200))
+        armor_items[i] = Thing(item,randrange(0,200),None,randrange(0,200))
+        i+=1
     return armor_items
 
 def generate_weapons(names):
     weapon_items = {}
+    i = 0
     for item in names:
-        weapon_items[item] = Thing(item, None, randrange(0,300), randrange(0,100))
+        weapon_items[i] = Thing(item, None, randrange(0,300), randrange(0,100))
+        i+=1
     return weapon_items
 
 
@@ -66,16 +71,27 @@ characters = generate_character(character_names)
 weapons = generate_weapons(weapon_names)
 armors = generate_armor(armor_names)
 
-def equip_characters(characters, weapons, armors):
-    while i:=0 < len(characters):
-        char = characters[i]
-        equip = generate_equip_list(weapons, armors)
-        char.equip_item(equip)
+print(characters)
+print(weapons)
+print(armors)
+
+def char_wear(characters,weapons, armors):
+    i = 0
+    while i < len(characters):
+        items = generate_equip_list(weapons, armors)
+        characters[i].set_things(items)
         i+=1
 
-equip_characters(characters, weapons, armors)
-        
+char_wear(characters,weapons,armors)
 
+def fight(characters):
+    loosers = []
+    winners = []
+    fighters = []
+    for i in characters:
+       print(f'Атака персонажа {characters[i].name} равна {characters[i].attack}')
 
+fight(characters)
+    
 
 

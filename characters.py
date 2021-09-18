@@ -8,9 +8,9 @@ class Person(object):
          self.defence = defence
 
     def set_things(self, things):
-        print(f'self.name экипируется')
+        print(f'{self.name} экипируется')
         for thing in things:
-            self.equip_item(self, thing)
+            self.equip_item(thing)
 
     def equip_item(self, item):
         print(f'{self.name} экипирует себе {item.name}')
@@ -22,7 +22,7 @@ class Person(object):
             print(f'Защита персонажа увеличивается на {item.defence_mod}')
         if item.health_mod is not None:
             self.health = self.health + item.health_mod
-            print(f'Персонаж {self.name} ощущает рост жизненных сил на {item.defence_mod}')
+            print(f'Персонаж {self.name} ощущает рост жизненных сил на {item.health_mod}')
 
         
     def health_calc(self):
