@@ -84,5 +84,3 @@ class Person:
 
         self.point[0] = round(self.point[0] + move[0], 2)
         self.point[1] = round(self.point[1] + move[1], 2)
-        print(self.point[0])
-        print(self.point[1])

@@ -33,10 +33,15 @@ def start_fight(percs):
     while len(percs) > 1:
         attack_pers = choice(percs)
         defend_pers = find_nearest_for_attack(attack_pers, percs)
-        print(attack_pers.simple_distance(defend_pers))
-        print(f'Радиус {attack_pers.radius_attack}')
-        for items in attack_pers.point:
-            print(items)
+        # print(attack_pers.simple_distance(defend_pers))
+        # print(attack_pers.point)
+        for item in attack_pers.point:
+            if item > 100 or item < 0:
+                print(f'ERROR {attack_pers}')
+        for item in defend_pers.point:
+            if item > 100 or item < 0:
+                print(f'ERROR {defend_pers}')
+
         if attack_pers.simple_distance(defend_pers) <= attack_pers.radius_attack:
             stat_battle = defend_pers.under_attack(attack_pers)
             print(Back.RED + Fore.BLACK +
