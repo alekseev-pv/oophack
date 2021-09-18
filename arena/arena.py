@@ -41,20 +41,23 @@ def create_person(klasse):
 
 def user_input():
     global SURVIVAL
-    gamer = input('Желаете создать своего персонажа? Y/N:  ').upper()
-    if gamer == 'Y':
-        gamer = input('Выберите класс Warrior или Paladin - W/P:  ').upper()
-        if gamer == 'W':
-            create_person(Warrior)
-        elif gamer == 'P':
-            create_person(Paladin)
+
+    while True:
+        gamer = input('Желаете создать нового персонажа? Y/N: ').upper()
+        if gamer == 'Y':
+            gamer = input('Выберите класс Warrior или Paladin - W/P: ').upper()
+            if gamer == 'W':
+                create_person(Warrior)
+            elif gamer == 'P':
+                create_person(Paladin)
+            else:
+                print('Вы не выбрали нужный класс, продолжим без Вас.')
         else:
-            print('Вы не выбрали нужный класс, продолжим без Вас.')
+            break
     survival = input('Хотите установить режим "На выживание"?'
-                     ' Тогда бойцы не восстановят здоровье после боя: Y/N:  '
+                     ' Тогда бойцы не восстановят здоровье после боя: Y/N: '
                      ).upper()
-    if survival == 'Y':
-        SURVIVAL = True
+    SURVIVAL = survival == 'Y'
 
 
 def get_things(fighters, things):
