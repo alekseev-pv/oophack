@@ -84,7 +84,7 @@ class Person:
         except AttributeError:
             pass
 
-        return points
+        return round(points)
 
     def __recalculate_final_protection(self):
         self.final_protection = self.total_defence_percent() / 100
@@ -180,6 +180,20 @@ class Warrior(Person):
         self.attack_points *= 2
 
 
+class Assasin(Person):
+    """Класс Защитника. Наследуется от Person."""
+
+    warrior_type = 'Ассасин'
+
+    def __init__(self, name, defence_percent, attack_points, health_points,
+                 is_unique, skills):
+        super().__init__(name, defence_percent, attack_points, health_points,
+                         is_unique, skills)
+
+        self.attack_points *= 2.6
+        self.health_points *= 1.3
+
+
 class ConsoleOutput:
     def __init__(self, general_settings):
         self.general_settings = general_settings
@@ -270,20 +284,23 @@ class Game:
                 *self.person_settings['AttackPoints'])
             health_points = random.randint(
                 *self.person_settings['HealthPoints'])
+
+            warriors_variants = Person.__subclasses__()
+            variants_count = len(warriors_variants)
+            weights = [1 / variants_count for k in range(variants_count)]
             warrior_class = random.choices(
-                warriors_variants, weights=[0.5, 0.5])[0]
+                warriors_variants, weights=weights)[0]
 
             skill_list = self.persons_skills if is_unique else \
                 skills_not_unique
 
-            constructor = globals()[warrior_class]
             self.warriors.append(
-                constructor(name=name,
-                            defence_percent=defence_percent,
-                            attack_points=attack_points,
-                            health_points=health_points,
-                            is_unique=is_unique,
-                            skills=skill_list)
+                warrior_class(name=name,
+                              defence_percent=defence_percent,
+                              attack_points=attack_points,
+                              health_points=health_points,
+                              is_unique=is_unique,
+                              skills=skill_list)
             )
 
     def __gear_up_warriors(self):
