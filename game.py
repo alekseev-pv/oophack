@@ -19,7 +19,7 @@ class Menu:
 
     def display_menu(self):
         """Метод выводит на экран меню."""
-        print('Добро пожаловть в игру!')
+        print('Добро пожаловать в игру!')
         print('Нажми ' + Fore.BLUE + '1' + Style.RESET_ALL +
               ' чтобы начать игру')
         print('Нажмите ' + Fore.CYAN + '2' + Style.RESET_ALL + ' чтобы выйти')
@@ -64,8 +64,8 @@ class Menu:
                 time.sleep(2)
                 continue
             # Игрок защищается
-            attacker = self.arena.team2.pop((
-                self.arena.get_index_of_character_with_maximum_attribute('final_attack')))
+            attacker = self.arena.team2[
+                self.arena.get_index_of_character_with_maximum_attribute('final_attack')]
             self.arena.print_players_team()
 
             print(f'{Fore.GREEN}Теперь вы защищаетесь!{Style.RESET_ALL}')
