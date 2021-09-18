@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Any, Dict
 import random
 
 
@@ -112,16 +112,19 @@ class Warrior(Person):
 
 class Game:
     """Класс процесса игры."""
-    things: List[Thing]
 
-    def __init__(self, thing_settings, person_settings, things_pre_list):
-        self.thing_settings = thing_settings
-        self.person_settings = person_settings
+    def __init__(self, thing_settings, person_settings, general_settings,
+                 things_pre_list, persons_pre_list, persons_skills):
+        self.persons_skills = persons_skills
+        self.general_settings = general_settings
 
         self.things = []
-        self.__create_things(things_pre_list)
+        self.__create_things(thing_settings, things_pre_list)
 
-    def __create_things(self, things_pre_list):
+        self.warriois = []
+        self.__create_wariors(person_settings, persons_pre_list)
+
+    def __create_things(self, thing_settings, things_pre_list):
         things_pre_list_count = len(things_pre_list)
 
         random.seed()
@@ -132,11 +135,11 @@ class Game:
 
             name = pre_name + variants[random.randint(0, len(variants) - 1)]
             defence_percent = random.randint(
-                *self.thing_settings['DefencePercent'])
+                *thing_settings['DefencePercent'])
             attack_points = random.randint(
-                *self.thing_settings['AttackPoints'])
+                *thing_settings['AttackPoints'])
             health_points = random.randint(
-                *self.thing_settings['HealthPoints'])
+                *thing_settings['HealthPoints'])
 
             things.append(
                 Thing(
@@ -149,3 +152,6 @@ class Game:
             )
 
         self.things = sorted(things, key=lambda v: v.defence_percent)
+
+    def __create_wariors(self, person_settings, persons_pre_list):
+        pass

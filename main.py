@@ -1,9 +1,12 @@
 from classes import Game
 
-from starwars import presets
+import config
 
 if __name__ == '__main__':
     game = Game(
-        thing_settings=presets.THING_SETTINGS,
-        person_settings=presets.PERSON_SETTINGS,
-        things_pre_list=presets.THINGS_PRE_LIST)
+        thing_settings=config.THING_SETTINGS,
+        person_settings=config.PERSON_SETTINGS,
+        general_settings=config.GENERAL_SETTINGS,
+        things_pre_list=config.presets.THINGS_PRE_LIST,
+        persons_pre_list=config.presets.PERSONS_PRE_LIST,
+        persons_skills=config.presets.PERSONS_SKILLS)
