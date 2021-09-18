@@ -6,20 +6,17 @@ init()
 
 class Person():
     def __init__(self, name, defense, attack, health, sex):
-        if defense > 0.5 or defense < 0:
-            raise ValueError('Неверное значение защиты')
-        if attack > 20 or attack < 0:
-            raise ValueError('Неверное значение атаки')
-        if health > 50 or health <= 0:
-            raise ValueError('Неверное значение здоровья')
+        if defense > 0.1 or defense < 0:
+            raise ValueError('Неверное значение защиты персонажа')
+        if attack > 20 or attack < 1:
+            raise ValueError('Неверное значение атаки персонажа')
+        if health > 50 or health < 1:
+            raise ValueError('Неверное значение здоровья персонажа')
         self.name = str(name)
         self.defense = float(defense)
         self.attack = float(attack)
         self.health = float(health)
-        if sex == 'W':
-            self.sex = 'w'
-        else:
-            self.sex = 'm'
+        self.sex = sex
         self.things = []
 
     def finalAttack(self):

@@ -1,4 +1,5 @@
 import random
+from time import sleep
 
 from colorama import init
 from models.things import Thing, sort_key
@@ -12,29 +13,29 @@ SURVIVAL = False
 
 COUNT_THINGS_ON_PERS = 4
 
-COUNT_PERSES = 10
+COUNT_PERSES = 20
 
 NAMES = [
-    'Keith Lowe',
-    'Gary Palmer',
-    'Lucille Carroll',
-    'Joanne Baker',
-    'Ruby Hill',
-    'Douglas Perez',
-    'Marjorie Hoffman',
-    'Ashley Anderson',
-    'Sarah Tyler',
-    'Jennifer Turner',
-    'Eric Jones',
-    'Ivan Rodriguez',
-    'Jesse Kim',
-    'Stephen Wagner',
-    'Leonard Stevenson',
-    'Cathy Bennett',
-    'Cathy Parker',
-    'Brenda Pearson',
-    'Thomas Ross',
-    'Henry Watkins',
+    ('Keith Lowe', 'w'),
+    ('Gary Palmer','m'),
+    ('Lucille Carroll', 'w'),
+    ('Joanne Baker', 'w'),
+    ('Ruby Hill', 'm'),
+    ('Douglas Perez', 'm'),
+    ('Marjorie Hoffman', 'w'),
+    ('Ashley Anderson', 'w'),
+    ('Sarah Tyler', 'w'),
+    ('Jennifer Turner', 'w'),
+    ('Eric Jones', 'm'),
+    ('Ivan Rodriguez', 'm'),
+    ('Jesse Kim', 'w'),
+    ('Stephen Wagner', 'm'),
+    ('Leonard Stevenson', 'm'),
+    ('Cathy Bennett', 'w'),
+    ('Cathy Parker', 'm'),
+    ('Brenda Pearson', 'w'),
+    ('Thomas Ross', 'm'),
+    ('Henry Watkins', 'm'),
 ]
 
 THINGS = sorted([
@@ -51,11 +52,11 @@ THINGS = sorted([
 
 def rand():
     klasse = Warrior if random.randint(0, 1) else Paladin
-    name = NAMES.pop(random.randint(0, len(NAMES) - 1))
-    defense = random.randint(0, 50) / 100
-    attack = random.randint(0, 20)
+    sleep(0.01)  # especially for Windows
+    name, sex = NAMES.pop(random.randint(0, len(NAMES) - 1))
+    defense = random.randint(1, 10) / 100
+    attack = random.randint(1, 20)
     helth = random.randint(1, 20)
-    sex = 'm' if random.randint(0, 1) else 'w'
     return klasse(name, defense, attack, helth, sex)
 
 
@@ -65,10 +66,10 @@ FIGHTERS = [rand() for _ in range(COUNT_PERSES)]
 def create_person(klasse):
     gamer = klasse(
         name=input('Введите имя: '),
-        defense=float(input('Установите защиту от 0 до 0.5:  ')),
+        defense=float(input('Установите защиту от 0 до 0.1:  ')),
         attack=float(input('Установите атаку от 0 до 20:  ')),
         health=float(input('Установите злоровье от 0 до 50:  ')),
-        sex=(input('Выберит пол персонажа W/M:  ').upper()), )
+        sex=(input('Выберит пол персонажа W/M:  ').lower()), )
     FIGHTERS.append(gamer)
 
 
@@ -76,12 +77,12 @@ def user_input():
     global SURVIVAL
 
     while True:
-        gamer = input('Желаете создать нового персонажа? Y/N: ').upper()
-        if gamer == 'Y':
-            gamer = input('Выберите класс Warrior или Paladin - W/P: ').upper()
-            if gamer == 'W':
+        gamer = input('Желаете создать нового персонажа? Y/N: ').lower()
+        if gamer == 'y':
+            gamer = input('Выберите класс Warrior или Paladin - W/P: ').lower()
+            if gamer == 'w':
                 create_person(Warrior)
-            elif gamer == 'P':
+            elif gamer == 'p':
                 create_person(Paladin)
             else:
                 print('Вы не выбрали нужный класс, продолжим без Вас.')
@@ -89,8 +90,8 @@ def user_input():
             break
     survival = input('Хотите установить режим "На выживание"?'
                      ' Тогда бойцы не восстановят здоровье после боя: Y/N: '
-                     ).upper()
-    SURVIVAL = survival == 'Y'
+                     ).lower()
+    SURVIVAL = survival == 'y'
 
 
 def get_things(fighters, things):
@@ -122,18 +123,16 @@ def burn_child(fighter_1, fighter_2):
 def battle(fighter_1, fighter_2):
     freeze_health_1 = fighter_1.health
     freeze_health_2 = fighter_2.health
-    attack_damage_1 = fighter_1.attack
-    attack_damage_2 = fighter_2.attack
-    if fighter_1.sex != fighter_2.sex and random.randint(0, 3) == 1:
+    if fighter_1.sex != fighter_2.sex and random.randint(0, 2):
         return burn_child(fighter_1, fighter_2)
 
     while True:
-        fighter_2.decrease_helth(attack_damage_1)
+        fighter_2.decrease_helth(fighter_1.attack)
         if fighter_2.health <= 0:
             if SURVIVAL:
                 fighter_1.health = freeze_health_1
             return fighter_1
-        fighter_1.decrease_helth(attack_damage_2)
+        fighter_1.decrease_helth(fighter_2.attack)
         if fighter_1.health <= 0:
             if SURVIVAL:
                 fighter_2.health = freeze_health_2
