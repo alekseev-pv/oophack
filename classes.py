@@ -1,19 +1,21 @@
 from random import randint
 from characters import Person
 
-
+# Надо играться с характеристиками классов...
+# Но я старался))
 class Paladin(Person):
     def __init__(self, name: str, hp: int, base_damage: int, base_protection: int):
         super().__init__(name, hp, base_damage, base_protection)
         self.hp = hp * 2
-        self.protection = base_protection * 2
-        self.resistance = 17
+        self.protection = base_protection # * 2
+        self.resistance = 10
         print(f'Явился новый воин Альянса!\n   Дитя света -  {self}')
 
 class Mage (Person):
     def __init__(self, name: str, hp: int, base_damage: int, base_protection: int):
         super().__init__(name, hp, base_damage, base_protection)
-        self.protection = int(base_protection / 2)
+        #self.protection = int(base_protection * 2)
+        self.crit = 50
         self.pinetra = 20
         self.resistance = 10
         print(f'Явился новый воин Альянса!\n   Дитя света -  {self}')
@@ -28,7 +30,7 @@ class Shaman(Person):
     def __init__(self, name: str, hp: int, base_damage: int, base_protection: int):
         super().__init__(name, hp, base_damage, base_protection)
         self.damage = base_damage * 2
-        self.crit += 10 
+        self.crit += 30 
         self.resistance = 10
         self.pinetra = 5
         print(f'Явился новый воин Орды!\n   {self}  Сам Вождь благославил его на бой!')
@@ -43,7 +45,8 @@ class Warloc_pet():
 class Warloc(Person):
     def __init__(self, name: str, hp: int, base_damage: int, base_protection: int):
         super().__init__(name, hp, base_damage, base_protection)
-        self.protection = int(base_protection / 2)
+        #self.protection = int(base_protection * 3)
+        self.crit = 40
         self.pinetra = 20
         self.resistance = 10
         self.pet = Warloc_pet(self)
