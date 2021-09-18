@@ -1,18 +1,26 @@
-from random import randint, choice
+from random import randint, choice, sample, shuffle
 
 import colorama
 from colorama import Fore, Back, Style
 
 colorama.init()
 
-PERSONAGE_COLORS = (Fore.GREEN, Fore.YELLOW, Fore.BLUE, Fore.CYAN)
-CHARACTERISTICS = ['ботан', 'сирота', 'бездомный', 'программист', 'курит',
+PERSONAGE_COLORS = (Fore.GREEN, Fore.BLUE, Fore.CYAN)
+CHARACTERISTICS = ('ботан', 'сирота', 'бездомный', 'программист', 'курит',
                    'смотрит сериалы', 'любит котиков', 'готовит кексики',
                    'участник шоу "Битва экстрасенсов"', 'храпит', 'свистит',
                    'выпивает 10 чашек кофе в день', 'интересуется политикой',
                    'нет слуха', 'есть секрет', 'знает албанский', 'рыбак',
-                   'всегда говорит правду', 'играет со спичками', 'депутат']
-PERSONAGES = ['Илон Маск', 'Ксения Собчак', '', '', '', 'Трамп', '', '', 'Роналду', '', '', '', '', '', '', '', '', '', '', '', ]
+                   'всегда говорит правду', 'играет со спичками', 'депутат')
+PERSONAGES = ('Илон Маск', 'Ксения Собчак', 'Моргенштерн', 'Ольга Бузова',
+              'Бейонсе', 'Трамп', 'Гарри Поттер', 'Павел Дуров', 'Терминатор',
+              'Нео', 'Линк', 'Леди Гага', 'Баба Яга', 'Шрек', 'Грязный Гарри',
+              'Бэтмен', 'Павел Алексеев', 'Джек Воробей', 'Роналду', 'Джокер')
+THINGS_NAMES = ('Утюг', 'Метла', 'Клубок ниток', 'Странное кольцо', 'Молоток',
+                'Скейтборд', 'Ноутбук', 'Тапки', 'Сапоги', 'Белый халат',
+                'Баян', 'Дудочка', 'Сковорода', 'Букварь', 'Пилочка', 'Коврик',
+                'Базука', 'Рояль', 'Книга "Изучаем Python. Марк Лутц"', 'Яд',
+                'Биткоин', 'Свисток', 'Волшебная палочка', 'Губка', 'Наушники')
 
 
 class Thing:
@@ -37,6 +45,8 @@ class Thing:
         self.defense = defense
         print(f'Предмет {Fore.MAGENTA}{self}{Style.RESET_ALL} '
               f'кем-то создан, но пока не обрёл своего хозяина')
+        print(f'Модификаторы предмета: Здоровье {self.health}, '
+              f'урон {self.damage}, защита {self.defense}')
 
     def __str__(self):
         return f'{Fore.MAGENTA}{self.name}{Style.RESET_ALL}'
@@ -59,6 +69,7 @@ class Person:
             health: float,
             damage: float,
             defense: float,
+            characteristic: str
     ):
         self.name = name
         self.health = health
@@ -68,10 +79,12 @@ class Person:
         self.defense = defense
         self.final_defense = defense
         self.color = choice(PERSONAGE_COLORS)
+        self.characteristic = characteristic
         self.things = []
-        print(f'Персонаж {self} появился в этом мире!')
-        print(f'Его параметры: Здоровье - {self.health}, '
+        print(f'{self} появился в этом мире!')
+        print(f'Параметры персонажа: Здоровье - {self.health}, '
               f'урон - {self.damage}, защита - {self.defense}')
+        print(f'{Fore.YELLOW}Особенность: {self.characteristic}{Style.RESET_ALL}')
 
     def __str__(self):
         return f'{self.color}{self.name}{Style.RESET_ALL}'
@@ -83,17 +96,18 @@ class Person:
         print(f'{Fore.RED}↔ {self} {Fore.RED}атакует{Style.RESET_ALL} {enemy}')
         enemy.gets_damage(self, self.damage)
 
-    def gets_damage(self, enemy: 'Person', attack_damage: int):
+    def gets_damage(self, enemy: 'Person', attack_damage: float):
         """
         Получение урона и расчёт оставшегося здоровья.
         """
         total_damage = attack_damage * enemy.defense
-        self.current_hp -= total_damage
+        self.current_hp = round(self.current_hp - total_damage, 2)
         print(f'└─ {self} получает урон от {enemy}: '
               f'{Fore.RED}{total_damage}{Style.RESET_ALL}.', end='')
         # print(self.current_hp, enemy.defense)
-        print(f' У него остаётся '
-              f'{Fore.GREEN}{self.current_hp}{Style.RESET_ALL} здоровья')
+        if self.current_hp > 0:
+            print(f' У него остаётся '
+                  f'{Fore.GREEN}{self.current_hp}{Style.RESET_ALL} здоровья')
 
     def set_thing(self, thing):
         """
@@ -101,26 +115,24 @@ class Person:
         """
         self.things.append(thing)
         print(f'{Fore.MAGENTA}◙{Style.RESET_ALL} {self} получил {thing}')
-        self.current_hp = self.health + (
+        self.current_hp = round(self.health + (
                 self.health * self.summary_parameter('health')
-        )
+        ), 2)
         print(f'└─ Теперь его Здоровье: {self.current_hp}', end='. ')
-        self.final_damage = self.damage + (
-                    self.damage * self.summary_parameter('damage')
-        )
+        self.final_damage = round(self.damage + (
+                self.damage * self.summary_parameter('damage')
+        ), 2)
         print(f'Урон: {self.final_damage}', end='. ')
-        self.final_defense = self.defense + (
-                    self.defense * self.summary_parameter('defense')
-        )
+        self.final_defense = round(self.defense + (
+                self.defense * self.summary_parameter('defense')
+        ), 2)
         print(f'Защита: {self.final_defense}')
-        all_things = self.all_things()
-        print(f'└─ Все его предметы: '
-              f'{Fore.MAGENTA}{all_things}{Style.RESET_ALL}')
 
     def all_things(self):
         """Список всех предметов персонажа."""
-        things_list = [item.name for item in self.things]
-        return ', '.join(things_list)
+        things_list = ', '.join([item.name for item in self.things])
+        print(f'└─ Все его предметы: '
+              f'{Fore.MAGENTA}{things_list}{Style.RESET_ALL}')
 
     def set_things(self, things_list):
         """
@@ -129,16 +141,16 @@ class Person:
         for thing in things_list:
             self.set_thing(thing)
 
-    def summary_parameter(self, characteristic):
+    def summary_parameter(self, parameter):
         """
         Суммирование значений указанной харатеристики для всех
         надетых на персонажа предметов.
         """
-        if characteristic == 'health':
+        if parameter == 'health':
             return sum([item.health for item in self.things])
-        if characteristic == 'damage':
+        if parameter == 'damage':
             return sum([item.damage for item in self.things])
-        if characteristic == 'defense':
+        if parameter == 'defense':
             return sum([item.defense for item in self.things])
         return 0
 
@@ -158,31 +170,35 @@ class Paladin(Person):
             health: float,
             damage: float,
             defense: float,
+            characteristic: str
     ):
-        super().__init__(name, health, damage, defense)
+        super().__init__(name, health, damage, defense, characteristic)
         self.health = health * 2
         self.defence = defense * 2
-        # print(f'Персонаж {self.name} класса паладин появился в этом мире!')
+        print('Здоровье и защита увеличены вдвое!')
 
 
 class Warrior(Person):
     """
     Воин.
     """
-
     def __init__(
             self,
             name: str,
             health: float,
             damage: float,
             defense: float,
+            characteristic: str
     ):
-        super().__init__(name, health, damage, defense)
+        super().__init__(name, health, damage, defense, characteristic)
         self.damage = damage * 2
-        # print(f'Персонаж {self.name} класса появился в этом мире!')
+        print('Урон увеличен вдвое!')
 
 
 def duel(player1: Person, player2: Person):
+    """
+    Поединок двух персонажей длится до смерти одного из них.
+    """
     priority = ((player1, player2), (player2, player1))
     previous_priority = None
     while True:
@@ -192,35 +208,109 @@ def duel(player1: Person, player2: Person):
         if (previous_priority is not None) and (
                 previous_priority == current_priority
         ):
-            print(f'└─ {defending} ошеломлён, и вновь ')
-        attacker, defending = current_priority
-        attacker.attack(defending)
+            print(f'└─ {defender} ошеломлён, и вновь ')
+        attacker, defender = current_priority
+        attacker.attack(defender)
         # если персонаж мёртв...
         if attacker.is_dead:
-            print(f'{Fore.WHITE}{Back.BLACK}▄ ╬ ▄ {attacker}'
-                  f'{Fore.WHITE}{Back.BLACK} погибает{Style.RESET_ALL}')
-            break
-        if defending.is_dead:
-            print(f'{Fore.WHITE}{Back.BLACK}▄ ╬ ▄ {defending}'
-                  f'{Fore.WHITE}{Back.BLACK} погибает{Style.RESET_ALL}')
-            break
+            print(f' {Fore.WHITE}{Back.BLACK}▄ ╬ ▄ {attacker}'
+                  f'{Fore.WHITE}{Back.BLACK} погибает{Style.RESET_ALL}\n')
+            return defender.name
+        if defender.is_dead:
+            print(f' {Fore.WHITE}{Back.BLACK}▄ ╬ ▄ {defender}'
+                  f'{Fore.WHITE}{Back.BLACK} погибает{Style.RESET_ALL}\n')
+            return attacker.name
         previous_priority = current_priority
 
 
+def generate_things():
+    """
+    Генератор вещей.
+    """
+    # генерируем от 10 до 40 вещей, чтобы не более 4 одному.
+    count = randint(10, 40)
+    things = []
+    for i in range(count):
+        # берём слуайное название вещи из списка
+        number_thing = randint(0, len(THINGS_NAMES) - 1)
+        things.append(
+            Thing(
+                name=THINGS_NAMES[number_thing],
+                health=round(-0.25 + (randint(0, 50) / 100), 2),
+                damage=round(-0.25 + (randint(0, 50) / 100), 2),
+                defense=round(-0.1 + (randint(0, 20) / 100), 2),
+            )
+        )
+        print()
+    return things
+
+
+def generate_personages():
+    """
+    Генератор персонажей.
+    """
+    count = 10
+    players = []
+    # выбираем случайные имена персонажей из списка
+    ten_names = sample(PERSONAGES, count)
+    # выбираем случайные особенности персонажей из списка
+    ten_characteristics = sample(CHARACTERISTICS, count)
+    for i in range(count):
+        # случайный класс персонажа - обычный, паладин или воин
+        class_personage = choice([Person, Paladin, Warrior])
+        players.append(
+            class_personage(
+                name=ten_names[i],
+                health=round(100 - randint(0, 30), 2),
+                damage=round(40 - randint(0, 20), 2),
+                defense=round(1 - (randint(0, 15) / 100), 2),
+                characteristic=ten_characteristics[i]
+            )
+        )
+        print()
+    return players
+
+
+def distribution_items(players, things):
+    """
+    Раздача предметов - не более 4 в одни руки.
+    (хм, а если у персонажа 4 руки, значит можно вдвое больше?).
+    """
+    # порядковый номер последнего отданного предмета
+    current = 0
+    for player in players:
+        # случайное количество предметов
+        count = randint(1, 4)
+        player.set_things(things[current:current + count])
+        current += count
+        player.all_things()
+
+
+def battle(players):
+    """
+    Турнир - персонажи делятся на две команды и соревнуются.
+    """
+    count_players = 10
+    winner_players = []
+    # перемешиваем участников и потом берём попарно
+    shuffle(players)
+    command1 = players[0:5]
+    command2 = players[5:10]
+    for i in range(5):
+        winner = duel(command1[i], command2[i])
+        winner_players.append(winner)
+    list_winners = ', '.join(winner_players)
+    print(f'{Fore.YELLOW}{Back.BLUE}Победители турнира: {list_winners}{Style.RESET_ALL}')
+
+
 def main():
-    thing1 = Thing('Странное кольцо', health=0.1, damage=-0.05, defense=-0.1)
-    thing2 = Thing('Утюг', health=0.05, damage=0.25, defense=0.05)
-    thing3 = Thing('Клубок ниток', health=0.15, damage=-0.01, defense=0.01)
-    thing4 = Thing('Метла', health=0.1, damage=0.1, defense=0.1)
-    player1 = Person(name='Шерлок', health=100, damage=35, defense=1)
-    player2 = Paladin(name='Мориарти', health=100, damage=40, defense=0.95)
-    # player1.set_thing(thing1)
-    player1.set_things([thing1, thing2])
-    player2.set_thing(thing3)
-    player1.set_thing(thing4)
-    # print(thing1)
-    # player1.attack(player2)
-    duel(player1, player2)
+    things = generate_things()
+    players = generate_personages()
+    distribution_items(players, things)
+    print()
+    print(f'{Fore.WHITE}{Back.RED}▒▒▒▒ Начинается битва ▒▒▒▒{Style.RESET_ALL}')
+    print()
+    battle(players)
 
 
 if __name__ == '__main__':
