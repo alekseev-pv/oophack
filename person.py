@@ -32,24 +32,29 @@ class Person:
         self.things = things[:3]
         for thing in self.things:
             self.final_hp += thing.hp
-            self.final_protection = round(self.final_protection + thing.defense, 2)
+            self.final_protection = round(
+                self.final_protection + thing.defense, 2)
             self.final_attack += thing.attack
             if is_log:
-                print(f'{self.name} с гордостью надевает: {thing.name}' + '\n' + 20 * '- ')
+                print(f'{self.name} с гордостью надевает: {thing.name}'
+                      + '\n' + 20 * '- ')
                 # "с гордостью надевает" -> beautify_wear
 
     def drop_things(self):
         pass
 
     def under_attack(self, attacker, is_log=False):
-        self.final_hp = round(self.final_hp - attacker.final_attack * (1 - self.final_protection))
+        self.final_hp = round(
+            self.final_hp -
+            attacker.final_attack * (1 - self.final_protection))
         if self.final_hp <= 0:
             self.final_hp = 0
         if is_log:
             if self.final_hp == 0:
                 print(f'{self.name} повержен!')
             else:
-                # можно добавить другие фразы в зависимости от оставшегося хп, входящего и фактически нанесенного урона
+                # можно добавить другие фразы в зависимости от
+                # оставшегося хп, входящего и фактически нанесенного урона
                 print(f'У {self.name} осталось {self.final_hp}')
         return {
             "attack_power": attacker.final_attack,
@@ -60,7 +65,9 @@ class Person:
         return self.things
 
     def simple_distance(self, target):
-        distance = math.sqrt(((self.point[0] - target.point[0]) ** 2) + ((self.point[1] - target.point[1]) ** 2))
+        distance = math.sqrt(
+            ((self.point[0] - target.point[0]) ** 2) +
+            ((self.point[1] - target.point[1]) ** 2))
         return round(distance, 2)
 
     def move_2d(self, target, space, move_distance):
