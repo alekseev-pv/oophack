@@ -39,7 +39,7 @@ def generate_armor(names):
     armor_items = {}
     i = 0
     for item in names:
-        armor_items[i] = Thing(item,randrange(0,200),None,randrange(0,200))
+        armor_items[i] = Thing(item,(randrange(1,100)/1000),None,randrange(0,1000))
         i+=1
     return armor_items
 
@@ -47,7 +47,7 @@ def generate_weapons(names):
     weapon_items = {}
     i = 0
     for item in names:
-        weapon_items[i] = Thing(item, None, randrange(0,300), randrange(0,100))
+        weapon_items[i] = Thing(item, None, randrange(0,100)/1000, randrange(0,1000))
         i+=1
     return weapon_items
 
@@ -71,10 +71,6 @@ characters = generate_character(character_names)
 weapons = generate_weapons(weapon_names)
 armors = generate_armor(armor_names)
 
-print(characters)
-print(weapons)
-print(armors)
-
 def char_wear(characters,weapons, armors):
     i = 0
     while i < len(characters):
@@ -84,14 +80,24 @@ def char_wear(characters,weapons, armors):
 
 char_wear(characters,weapons,armors)
 
-def fight(characters):
-    loosers = []
-    winners = []
-    fighters = []
-    for i in characters:
-       print(f'Атака персонажа {characters[i].name} равна {characters[i].attack}')
+def fight(player_one, player_two):
+    player_one_health = player_one.health
+    player_two_health = player_two.health
+    player_one_attack = player_one.attack
+    player_two_attack = player_two.attack
+    player_one_defence = player_one.defence
+    player_two_defence = player_two.defence
+    while player_one_health >= 0 or player_two_health >= 0:
+        hit = player_one_attack-(player_one_attack*(player_two_defence/1000))
+        print(f'{player_two.name} наносит удар по {player_one.name} на {hit} урона')
+        player_two_health += -(hit)
+        if player_two_health <= 0:
+           return player_one
+        hit = player_two_attack-(player_two_attack*(player_one_defence/1000))
+        print(f'{player_one.name} наносит удар по {player_two.name} на {hit} урона')
+        player_one_health += -(hit)
+        if player_one_health <=0:
+           return player_two
+        
 
-fight(characters)
-    
-
-
+print(fight(characters[1],characters[2]))

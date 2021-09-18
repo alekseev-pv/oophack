@@ -18,8 +18,11 @@ class Person(object):
             self.attack = self.attack+item.attack_mod
             print(f'Атака персонажа увеличивается на {item.attack_mod}')
         if item.defence_mod is not None:
-            self.defence = self.defence + item.defence_mod
-            print(f'Защита персонажа увеличивается на {item.defence_mod}')
+            print(item.defence_mod)
+            print(self.defence)
+            print(self.defence*item.defence_mod)
+            self.defence = self.defence + (self.defence*item.defence_mod)
+            print(f'Защита персонажа увеличивается на {item.defence_mod} %')
         if item.health_mod is not None:
             self.health = self.health + item.health_mod
             print(f'Персонаж {self.name} ощущает рост жизненных сил на {item.health_mod}')
