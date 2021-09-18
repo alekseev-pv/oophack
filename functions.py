@@ -42,11 +42,9 @@ def fight_table(fighters_list):
         while (fighter_1.health > 0) and (fighter_2.health > 0):
             print(Fore.RED + f'{fighter_1.name} наносит удар')
             fighter_2.hit(fighter_1.damage)
-            # print(fighter_2.health)
             if fighter_2.health > 0:
                 print(Fore.RED + f'{fighter_2.name} наносит удар')
                 fighter_1.hit(fighter_2.damage)
-                # print(fighter_1.health)
         if fighter_1.health > 0:
             print(Fore.YELLOW + f'{fighter_1.name_class} {fighter_1.name} - Герой Арены!')
             return fighter_1
@@ -63,11 +61,9 @@ def fight_spot(fighter_spot: list):
     while (fighter_1.health > 0) and (fighter_2.health > 0):
         print(Fore.RED + f'{fighter_1.name} наносит удар')
         fighter_2.hit(fighter_1.damage)
-        # print(fighter_2.health)
         if fighter_2.health > 0:
             print(Fore.RED + f'{fighter_2.name} наносит удар')
             fighter_1.hit(fighter_2.damage)
-            # print(fighter_1.health)
     if fighter_1.health > 0:
         print(Fore.LIGHTGREEN_EX + f'{fighter_1.name_class} {fighter_1.name} победил в схватке')
         return fighter_1

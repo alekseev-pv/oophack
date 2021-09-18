@@ -44,8 +44,10 @@ class Person(ABC):
         if random.randint(0, 100) <= self.block:
             print(Fore.BLUE + f'{self.name} заблокировал удар')
             return None
-        strike_power = (random.randint(50, 150) / 100)
-        self.health -= round(damage * ((100 - self.armor) / 100) * strike_power)
+        strike_multiplier = (random.randint(50, 150) / 100)
+        strike_power = round(damage * ((100 - self.armor) / 100) * strike_multiplier)
+        print(Fore.RED + f'силой {strike_power}')
+        self.health -= strike_power
         if self.health <= Person.death_health:
             print(Fore.LIGHTCYAN_EX + f'{self.name} не может продолжать бой')
         else:
@@ -102,7 +104,7 @@ class Rogue(Person):
         self.bonus_health = (sum(thing.bonus_health for thing in inventory) + 100) / 100
         self.bonus_dodge = (sum(thing.bonus_dodge for thing in inventory) + 100) / 100
         self.bonus_block = (sum(thing.bonus_block for thing in inventory) + 100) / 100
-        self.damage = self.damage * self.bonus_damage
+        self.damage = self.damage * 1.5 * self.bonus_damage
         self.defense = self.armor * self.bonus_defense
         self.health = self.health * 0.75 * self.bonus_health
         self.dodge = self.dodge * 3 * self.bonus_dodge
