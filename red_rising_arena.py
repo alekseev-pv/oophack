@@ -1,5 +1,5 @@
 from __future__ import annotations
-from models import CHARACTERS
+from models import CHARACTERS, ITEMS
 import random
 
 
@@ -13,18 +13,23 @@ class Person(object):
     def show(self):
         print(f'{self.name} has entered the arena')
         print(
-            f'Stats: {self.hp} hp, {self.attack} damage rate, {self.defense} defense.')
+            f'Stats: {self.hp} hp, {self.attack} damage rate, {self.defense} defense.\n\n')
 
 
 class Item(object):
     def __init__(self, attack: float, defense: float, durability: int,
                  name: str) -> None:
-        self.attack = attack
-        self.defense = defense
+        self.attack = attack / 100
+        self.defense = defense / 100
         self.durability = durability
         self.name = name
-        if self.defese > 0.1:
+        if self.defense > 0.1:
             self.defense = 0.1
+    
+    def show(self):
+        print(f'Item name: {self.name}')
+        print(f'attack: {self.attack}\ndefense: {self.defense}\n'
+              f'durability: {self.durability}\n\n')
 
 
 class Obsidian(Person):
@@ -55,3 +60,12 @@ for person in CHARACTERS:
             person['defense'],
             person['name'])
         obsidian.show()
+
+for item in ITEMS:
+    item = Item(
+        item['attack'],
+        item['defense'],
+        item['durability'],
+        item['name'],
+    )
+    item.show()
