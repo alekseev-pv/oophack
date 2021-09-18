@@ -26,11 +26,11 @@ class Thing:
         self.attack_damage = attack_damage
 
     def __str__(self) -> str:
-        return ("\n" + Fore.YELLOW + "Thing:\n"
-                f"Name - {self.name:.1f}\n"
-                f"Health points - {self.hitpoints:.1f}\n"
-                f"protection - {self.protection:.1f}\n"
-                f"Attack attack_damage - {self.attack_damage:.1f}\n"
+        return ("\n" + Fore.YELLOW +
+                f"Название - {self.name}\n"
+                f"Плюс к здоровью - {self.hitpoints:.1f}\n"
+                f"Плюс к броне - {self.protection:.2f}\n"
+                f"Плюс к урону - {self.attack_damage:.1f}\n"
                 + Style.RESET_ALL)
 
 
@@ -58,11 +58,17 @@ class Person:
         self.final_attack_damage = base_attack_damage
 
     def can_fight(self) -> bool:
+        """
+        Метод проверки жизнеспособности героя.
+        """
         if self.final_hp <= 0:
             return False
         return True
 
     def damage_reduction(self, attack_damage: float) -> float:
+        """
+        Расчет получаемого урона с учетом брони
+        """
         return attack_damage * (1 - self.final_protection)
 
     def set_things(self, things: List[Thing]) -> None:
@@ -73,6 +79,9 @@ class Person:
         self.__put_on()
 
     def taking_attack_damage(self, attack_damage: float) -> None:
+        """
+        Метод снижения хитпойнтов при получении урона
+        """
         self.final_hp -= self.damage_reduction(attack_damage)
 
     def __put_on(self) -> None:
@@ -82,17 +91,16 @@ class Person:
             self.final_attack_damage += thing.attack_damage
 
     def __str__(self) -> str:
-        return (Fore.CYAN + f"Name - {self.name.upper()}\n"
-                "BASE\n"
-                f"\tBase Health - {self.base_hitpoints:.1f}\n"
-                f"\tBase protection - {self.base_protection:.1f}\n"
-                "\tBase Attack attack_damage"
-                f" - {self.base_attack_damage:.1f}\n"
-                "WITHS THING ["
+        return (Fore.CYAN + f"Имя - {self.name.upper()}\n"
+                "Базовые характеристики\n"
+                f"\tБазовое здоровье - {self.base_hitpoints:.1f}\n"
+                f"\tБазовая защита - {self.base_protection:.2f}\n"
+                f"\tБазовый урон - {self.base_attack_damage:.1f}\n"
+                "Характеристики с учетом артефактов [" +
                 ", ".join([thing.name for thing in self.things]) +
-                f"]\n\tHealth- {self.final_hp:.1f}\n"
-                f"\tprotection- {self.final_protection:.2f}\n"
-                f"\tAttack- {self.final_attack_damage:.1f}\n"
+                f"]\n\tЗдоровье- {self.final_hp:.1f}\n"
+                f"\tЗащита - {self.final_protection:.2f}\n"
+                f"\tУрон - {self.final_attack_damage:.1f}\n"
                 + Style.RESET_ALL)
 
 
@@ -115,14 +123,17 @@ class Paladin(Person):
         self.type_hero = "Paladin"
 
     def print_statistic(self) -> None:
-        print(f"Name - {self.name}")
-        print(f"Type of hero - {self.type_hero}")
-        print(f"Last HP - {self.final_hp:.1f}")
-        print(f"Armor - {self.final_protection:.1f}")
-        print(f"Attack damage - {self.final_attack_damage:.1f}")
+        """
+        Текущая статистика по герою.
+        """
+        print(f"Имя - {self.name}")
+        print(f"Тип героя - {self.type_hero}")
+        print(f"Текущее здоровье - {self.final_hp:.1f}")
+        print(f"Защита - {self.final_protection:.1f}")
+        print(f"Урон - {self.final_attack_damage:.1f}")
 
     def __str__(self) -> str:
-        return (Fore.CYAN + "Type of Hero - " +
+        return (Fore.CYAN + "Тип героя - " +
                 str(self.type_hero) + "\n" + super().__str__())
 
 
@@ -145,12 +156,15 @@ class Warrior(Person):
         self.type_hero = "Warrior"
 
     def print_statistic(self) -> None:
-        print(f"Name - {self.name}")
-        print(f"Type of hero - {self.type_hero}")
-        print(f"Last HP - {self.final_hp:.1f}")
-        print(f"Armor - {self.final_protection:.1f}")
-        print(f"Attack damage - {self.final_attack_damage:.1f}")
+        """
+        Текущая статистика по герою.
+        """
+        print(f"Имя - {self.name}")
+        print(f"Тип героя - {self.type_hero}")
+        print(f"Текущее здоровье - {self.final_hp:.1f}")
+        print(f"Защита - {self.final_protection:.1f}")
+        print(f"Урон - {self.final_attack_damage:.1f}")
 
     def __str__(self) -> str:
-        return (Fore.CYAN + "Type of Hero - " +
+        return (Fore.CYAN + "Тип героя - " +
                 str(self.type_hero) + "\n" + super().__str__())

@@ -2,11 +2,15 @@
 Модуль в котором реализован алгоритм сценария игры.
 """
 import random
-from typing import List, Union
+
+from typing import List, Union, Tuple
 
 from colorama import Back, Fore, Style
 
 from models import Paladin, Thing, Warrior
+
+
+CustomTuple = Tuple[List[Union[Paladin, Warrior]], List[Thing]]
 
 
 def create_things(count_things: int = 20) -> List[Thing]:
@@ -68,7 +72,7 @@ def dress_heroes(heroes: List[Union[Paladin, Warrior]],
         hero.set_things(things)
 
 
-def arena(heroes: List[Union[Paladin, Warrior]]) -> None:
+def arena(heroes: List[Union[Paladin, Warrior]]) -> Union[Paladin, Warrior]:
     count_living_heroes = len(heroes)
     while count_living_heroes != 1:
         index_heroes = range(count_living_heroes)
@@ -94,3 +98,12 @@ def arena(heroes: List[Union[Paladin, Warrior]]) -> None:
     hero = heroes[0]
     hero.print_statistic()
     print(Style.RESET_ALL)
+
+    return hero
+
+
+def initial_heroes_and_things() -> CustomTuple:
+    things = create_things()
+    heroes = create_heroes()
+    dress_heroes(heroes, things)
+    return (heroes, things)
