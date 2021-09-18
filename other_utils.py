@@ -1,5 +1,6 @@
 from random import randint, uniform, shuffle, choice
 
+from person import Person
 from specialization import Paladin, Warrior
 from things import Thing
 
@@ -40,31 +41,35 @@ def create_stuff(count=len(fill_things), need_print=False):
 
 
 def create_percs(count=len(names_for_percs), need_print=False):
+    def fill_percs(name_specialization=Person, num_objects=0, points=None):
+        if points is None:
+            points = []
+        for i in range(num_objects):
+            shuffle(names_for_percs)
+            name = names_for_percs.pop()
+            attack = randint(10, 200)
+            defense = round(uniform(0, .05), 2)
+            hp = randint(100, 1000)
+            speed = randint(19, 21)
+            point = [randint(0, 100), randint(0, 100)]
+            while point in points:
+                point = [randint(0, 100)]
+            points.append(point)
+            perc = name_specialization(name=name, attack=attack, defense=defense, hp=hp,
+                                       speed=speed, point=point)
+            list_percs.append(perc)
+        print(f'Создано {num_objects} персонажей класса {name_specialization.spec_name}\n')
+
+    positions = []
     list_percs = []
     if count > len(names_for_percs):
         count = len(names_for_percs)
     num_pal = randint(1, count - 1)
     num_war = count - num_pal
 
-    for i in range(num_pal):
-        shuffle(names_for_percs)
-        name = names_for_percs.pop()
-        attack = randint(10, 200)
-        defense = round(uniform(0, .05), 2)
-        hp = randint(100, 1000)
-        perc = Paladin(name=name, attack=attack, defense=defense, hp=hp)
-        list_percs.append(perc)
+    fill_percs(name_specialization=Paladin, num_objects=num_pal, points=positions)
+    fill_percs(name_specialization=Warrior, num_objects=num_war, points=positions)
 
-    for i in range(num_war):
-        shuffle(names_for_percs)
-        name = names_for_percs.pop()
-        attack = randint(10, 200)
-        defense = round(uniform(0, .05), 2)
-        hp = randint(100, 1000)
-        perc = Warrior(name=name, attack=attack, defense=defense, hp=hp)
-        list_percs.append(perc)
-    print(f'Создано {num_pal} паладинов')
-    print(f'Создано {num_war} воинов')
     return list_percs
 
 

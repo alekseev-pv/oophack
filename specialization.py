@@ -2,15 +2,20 @@ from person import Person
 
 
 class Paladin(Person):
-    def __init__(self, name, attack, defense, hp):
-        super().__init__(name, attack, defense, hp)
+    spec_name = 'Paladin'
+
+    def __init__(self, name, attack, defense, hp, speed, point):
+        super().__init__(name, attack, defense, hp, speed, point)
         self.final_hp = hp * 2
         self.final_protection = self.final_protection * 2
-        self.spec_name = 'Paladin'
+        self.radius_attack = 7
 
 
 class Warrior(Person):
-    def __init__(self, name, attack, defense, hp):
-        super().__init__(name, attack, defense, hp)
+    spec_name = 'Warrior'
+
+    def __init__(self, name, attack, defense, hp, speed, point):
+        super().__init__(name, attack, defense, hp, speed, point)
         self.final_attack *= 2
-        self.spec_name = 'Warrior'
+        self.speed = round(self.speed * 1.03)
+        self.radius_attack = 10
