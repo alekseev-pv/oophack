@@ -44,6 +44,7 @@ class Person:
         self.base_defence = base_defence
         self.finalProtection = 0
         self.things = []
+        self.is_gamer = False
 
     def set_things(self, things):
         """
@@ -51,7 +52,6 @@ class Person:
         """
         self.things = things
         self.finalProtection = self.get_final_protection()
-        pass
 
     def get_final_protection(self):
         """
@@ -76,9 +76,17 @@ class Person:
         """
         Определяет урон при атаке
         """
-        selected_thing = self.things[random.randint(
-            0, len(self.things) - 1)]
-        return selected_thing.attack_per * self.base_attack
+        if not self.is_gamer:
+            return self.things[random.randint(
+                0, len(self.things) - 1)].attack_per * self.base_attack
+        else:
+            for thing in self.things:
+                print(thing)
+            selected_thing_name = input(
+                'Введите имя вооружения для атаки\n')
+            selected_things = list(
+                filter(lambda x: x.name in selected_thing_name, self.things))
+            return selected_things[0].attack_per * self.base_attack
 
     def is_alive(self):
         """
@@ -167,10 +175,10 @@ class Game():
             warrior_names[random.randint(
                 0, len(warrior_names)-1)], 100, random.randint(10, 100),
             random.uniform(0.01, 0.1)) for i in range(0, 10)]  # список войнов
-        if person is not None:
-            warriors.append(person)
         for warrior in warriors:
             warrior.set_things(self.get_random_things(all_things))
+        if person is not None:
+            warriors.append(person)
         while len(warriors) != 1:
             first_warrior = warriors[random.randint(
                 0, len(warriors)-1)]
@@ -207,6 +215,7 @@ def main() -> None:
         attack = int(input('Определите уровень атаки от 1 до 100\n'))
         defence = int(input('Определите уровень защиты от 1 до 99\n'))/100
         person = race(name, 100, attack, defence)
+        person.is_gamer = True
         person.set_things(selected_things)
         game.auto_game(warrior_names, warrior_types, person)
 
