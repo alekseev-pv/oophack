@@ -260,8 +260,6 @@ class Game:
         self.things = sorted(things, key=lambda v: v.defence_percent)
 
     def __create_warriors(self):
-        warriors_variants = (Paladin.__name__, Warrior.__name__)
-
         persons_list = list(self.persons_pre_list)
 
         warriors_max_count = self.general_settings['WarriorsCount']
