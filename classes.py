@@ -1,4 +1,5 @@
 from typing import List
+import random
 
 
 class Thing:
@@ -70,7 +71,7 @@ class Person:
         """Метод вычитания health_points экземпляра в зависимости от атаки
         attack_damage."""
         health_points = self.health_points - attack_damage * (
-                    1 - self.final_protection)
+                1 - self.final_protection)
 
         self.health_points = 0 if health_points < 0 else health_points
 
@@ -111,6 +112,40 @@ class Warrior(Person):
 
 class Game:
     """Класс процесса игры."""
+    things: List[Thing]
 
-    def create_things(self):
-        pass
+    def __init__(self, thing_settings, person_settings, things_pre_list):
+        self.thing_settings = thing_settings
+        self.person_settings = person_settings
+
+        self.things = []
+        self.__create_things(things_pre_list)
+
+    def __create_things(self, things_pre_list):
+        things_pre_list_count = len(things_pre_list)
+
+        random.seed()
+        things = []
+        while len(things) < 5:
+            tid = random.randint(0, things_pre_list_count - 1)
+            pre_name, is_weapon, is_clothes, variants = things_pre_list[tid]
+
+            name = pre_name + variants[random.randint(0, len(variants) - 1)]
+            defence_percent = random.randint(
+                *self.thing_settings['DefencePercent'])
+            attack_points = random.randint(
+                *self.thing_settings['AttackPoints'])
+            health_points = random.randint(
+                *self.thing_settings['HealthPoints'])
+
+            things.append(
+                Thing(
+                    name=name,
+                    defence_percent=defence_percent,
+                    attack_points=attack_points,
+                    health_points=health_points,
+                    is_weapon=is_weapon,
+                    is_clothes=is_clothes)
+            )
+
+        self.things = sorted(things, key=lambda v: v.defence_percent)
