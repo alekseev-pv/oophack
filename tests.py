@@ -60,3 +60,21 @@ class TestPerson(unittest.TestCase):
         call = self.person_without_things.total_attack_points()
         result = 10
         self.assertEqual(call, result)
+
+    def test_persons_damage_kick_with_10_points(self):
+        self.person_without_things.decrease_health_points(10)
+        call = self.person_without_things.health_points
+        result = 93.5
+        self.assertEqual(call, result)
+
+    def test_persons_damage_kick_with_100_points(self):
+        self.person_without_things.decrease_health_points(100)
+        call = self.person_without_things.health_points
+        result = 35.0
+        self.assertEqual(call, result)
+
+    def test_persons_damage_kick_with_200_points(self):
+        self.person_without_things.decrease_health_points(200)
+        call = self.person_without_things.health_points
+        result = 0.0
+        self.assertEqual(call, result)

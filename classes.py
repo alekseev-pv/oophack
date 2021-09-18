@@ -62,7 +62,10 @@ class Person:
     def decrease_health_points(self, attack_damage):
         """Метод вычитания health_points экземпляра в зависимости от атаки
         attack_damage."""
-        self.health_points -= attack_damage
+        health_points = self.health_points - attack_damage * (
+                    1 - self.final_protection)
+
+        self.health_points = 0 if health_points < 0 else health_points
 
     def total_defence_percent(self):
         """Вычисление количества поинтов защиты."""
@@ -82,6 +85,7 @@ class Person:
 
 class Paladin(Person):
     """Класс Паладина. Наследуется от Person."""
+
     def __init__(self, name, defence_percent, attack_points, health_points):
         super().__init__(name, defence_percent, attack_points, health_points)
 
@@ -91,6 +95,7 @@ class Paladin(Person):
 
 class Warrior(Person):
     """Класс Воина. Наследуется от Person."""
+
     def __init__(self, name, defence_percent, attack_points, health_points):
         super().__init__(name, defence_percent, attack_points, health_points)
 
