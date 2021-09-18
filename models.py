@@ -46,16 +46,21 @@ class Thing:
                 f"{self.health} к здоровью,"
                 f"{self.protect} к защите.")
 
+    def __repr__(self):
+        return str(self.protect)
+
     @classmethod
     def generate_things(cls, quantity: int = 1):
         # TODO доавить проверку уникальности предмета
-        return [Thing() for _ in range(quantity)]
+        things = [Thing() for _ in range(quantity)]
+        things.sort(key=lambda obj: obj.protect)
+        return things
 
-t = Thing()
-print(t.__dict__)
+things = Thing.generate_things(4)
+print(things)
 
 class Person:
-    PARAMETERS = ("attack", "health", "protect")
+    """Class of game characters."""
 
     def __init__(self, name: str = "Harry",
                  attack: int = 5, health: int = 50, protect: int = 0):
@@ -65,18 +70,42 @@ class Person:
         self.protect = protect
         self.things = []
 
-    def _update_parameters(self):
-        # TODO подумать о генерации новых параметров относительно исходных
-        self.full_attack = self.attack + \
-                            sum(thing.__dict__["attack"] for thing in self.things)
-        self.full_health = self.health + \
-                            sum(thing.__dict__["health"] for thing in self.things)
-        self.full_protect = self.protect + \
-                            sum(thing.__dict__["protect"] for thing in self.things)
+    def __update_parameters(self) -> None:
+        self.full_attack = (self.attack +
+                            sum(thing.__dict__["attack"] for thing in self.things))
+        self.full_health = (self.health +
+                            sum(thing.__dict__["health"] for thing in self.things))
+        self.full_protect = (self.protect +
+                             sum(thing.__dict__["protect"] for thing in self.things))
 
+    def is_hero_alive(self):
+        return self.health == 0
 
-    def get_things(self, things: list):
+    def get_things(self, things: list) -> None:
         self.things = things
-        return self._update_parameters
+        self.__update_parameters()
 
+    def take_damage(self, attack_hero: object):
+        attack_damage = attack_hero.full_attack
+        self.full_health - attack_damage * (1 - self.full_protect)
+        print(f"{attack_hero.name} наносит удар по "
+              f"{self.name} на {attack_damage} урона")
+
+
+class Paladin(Person):
+    def __init__(self):
+        super(Person, self).__init__()
+        self.protect *= 2
+
+
+class Warrior(Person):
+    def __init__(self):
+        super(Person, self).__init__()
+        self.attack *= 2
+
+
+class Monk(Person):
+    def __init__(self):
+        super(Person, self).__init__()
+        self.health *= 2
 
