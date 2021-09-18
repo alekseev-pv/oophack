@@ -57,6 +57,9 @@ class Person:
            вещей из списка (things).
         """
         for i in range(count):
+            if len(things) == 0:
+                print('Упс, доспехи закончились')
+                break
             thing = choice(things)
             things.remove(thing)
             self.hp += thing.hp
@@ -132,6 +135,10 @@ for i in range(COUNT_PERSON):
 print()
 """Одеваем персонажей в случайные вещи."""
 for person in persons:
+    if len(things) == 0:
+        print('Упс, доспехов на всех не хватило')
+        print()
+        break
     print(f'{person.class_name}' + Fore.GREEN + f' "{person}" ' +
           Style.RESET_ALL + f': Здоровье - {person.hp}, '
           f'Базовая атака - {person.base_attack}, '
