@@ -17,7 +17,8 @@ class Menu:
             '2': self.exit
         }
 
-    def display_menu(self):
+    @staticmethod
+    def display_menu():
         """Метод выводит на экран меню."""
         print('Добро пожаловать в игру!')
         print('Нажми ' + Fore.BLUE + '1' + Style.RESET_ALL +
@@ -82,7 +83,8 @@ class Menu:
             if self.arena.is_over():
                 active = False
 
-    def exit(self):
+    @staticmethod
+    def exit():
         sys.exit(1)
 
 

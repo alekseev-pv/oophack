@@ -146,7 +146,8 @@ class Arena:
 
         # Если пользователь почему-то не выбрал ни одного персонажа, то даем рандомных
         if not character_dict.keys():
-            print('Ты не выбрал ни одного персонажа, поэтому тебе дадут их рандомно!')
+            print(
+                'Ты не выбрал ни одного персонажа, поэтому тебе дадут их рандомно!')
             time.sleep(2)
             for _ in range(10):
                 new_char = self._generate_character(['warrior',
@@ -155,7 +156,6 @@ class Arena:
                 self._add_to_team1(new_char)
             return None
 
-
         print(f"""
             Итак, ты собрал команду!
             *********
@@ -163,7 +163,7 @@ class Arena:
         for key, value in character_dict.items():
             print(
                 f'{Fore.BLUE}{key}{Style.RESET_ALL}: {Fore.RED}{value}{Style.RESET_ALL}'
-                )
+            )
 
         self._create_players_team(character_dict)
         time.sleep(2)
@@ -183,7 +183,8 @@ class Arena:
                 print(f'{Fore.RED}Неправильный тип данных{Style.RESET_ALL}')
                 continue
 
-    def game_round(self, attacker, defender):
+    @staticmethod
+    def game_round(attacker, defender):
         """Один игровой раунд."""
         attack_damage = attacker.final_attack
         final_defence = defender.final_defence
