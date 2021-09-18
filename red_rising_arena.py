@@ -1,4 +1,6 @@
 from __future__ import annotations
+from models import CHARACHTERS
+import random
 
 
 class Person(object):
@@ -14,6 +16,17 @@ class Person(object):
             f'Stats: {self.hp} hp, {self.attack} damage rate, {self.defense} defense.')
 
 
+class Item(object):
+    def __init__(self, attack: float, defense: float, durability: int,
+                 name: str) -> None:
+        self.attack = attack
+        self.defense = defense
+        self.durability = durability
+        self.name = name
+        if self.defese > 0.1:
+            self.defense = 0.1
+
+
 class Obsidian(Person):
     def __init__(self, hp: int, attack: int, defense: int, name: str) -> None:
         super().__init__(hp, attack, defense, name)
@@ -27,5 +40,18 @@ class Gold(Person):
         self.attack = attack * 2
 
 
-darrow = Gold(100, 75, 50, 'Darrow')
-darrow.show()
+for person in CHARACHTERS:
+    if person['fraction'] == 'gold':
+        gold = Gold(
+            person['hp'],
+            person['attack'],
+            person['defense'],
+            person['name'])
+        gold.show()
+    else:
+        obsidian = Obsidian(
+            person['hp'],
+            person['attack'],
+            person['defense'],
+            person['name'])
+        obsidian.show()
