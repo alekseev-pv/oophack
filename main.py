@@ -100,4 +100,20 @@ def fight(player_one, player_two):
            return player_two
         
 
-print(fight(characters[1],characters[2]))
+def mass_fight(characters):
+    active = list(characters.values())
+    print(active)
+    while len(active)>1:
+        player_one_idx = randrange(0,len(active))
+        player_one = active[player_one_idx]
+        print(f'В левом углу арены {player_one.name}')
+        active.remove(player_one)
+        player_two_idx = randrange(0,len(active))
+        player_two = active[player_two_idx]
+        print(f'в правом углу арены {player_two.name}')
+        active.remove(player_two)
+        winner = fight(player_one, player_two)
+        print(f'Победитель схватки {winner.name}')
+        active.append(winner)
+    print(f'Чемпион вселенной {active[0].name}')
+mass_fight(characters)
