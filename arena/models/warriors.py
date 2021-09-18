@@ -1,6 +1,7 @@
+from time import sleep
+
 from colorama import init
 from termcolor import colored
-from time import sleep
 
 init()
 

@@ -1,9 +1,10 @@
-from colorama import init
-from termcolor import colored
 import random
-from models.warriors import Paladin, Warrior
-from models.things import Thing, sort_key
 from time import sleep
+
+from colorama import init
+from models.things import Thing, sort_key
+from models.warriors import Paladin, Warrior
+from termcolor import colored
 
 init()
 print(colored('\n\n_____ START GAME  _____\n\n', 'yellow'))
