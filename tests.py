@@ -31,6 +31,11 @@ class TestPerson(unittest.TestCase):
         result = 20
         self.assertEqual(call, result)
 
+    def test_persons_final_protection_with_things(self):
+        call = self.person_with_things.total_final_protection()
+        result = 0.2
+        self.assertEqual(call, result)
+
     def test_persons_attack_points_with_things(self):
         call = self.person_with_things.total_attack_points()
         result = 70
@@ -44,6 +49,11 @@ class TestPerson(unittest.TestCase):
     def test_persons_defence_percent_without_things(self):
         call = self.person_without_things.total_defence_percent()
         result = 35
+        self.assertEqual(call, result)
+
+    def test_persons_final_protection_without_things(self):
+        call = self.person_without_things.total_final_protection()
+        result = 0.35
         self.assertEqual(call, result)
 
     def test_persons_attack_points_without_things(self):

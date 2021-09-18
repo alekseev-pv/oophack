@@ -27,6 +27,7 @@ class Person:
     - количество жизней (health_points)."""
     name: str
     defence_percent: int
+    final_protection: float
     health_points: float
     attack_points: float
     things: List[Thing]
@@ -37,14 +38,7 @@ class Person:
         self.attack_points = attack_points
         self.health_points = health_points
 
-    def set_things(self, things):
-        """Устанавливаем список вещей."""
-        self.things = things
-
-    def decrease_health_points(self, attack_damage):
-        """Метод вычитания health_points экземпляра в зависимости от атаки
-        attack_damage."""
-        pass
+        self.__recalculate_final_protection()
 
     def __total_points(self, attrname):
         """Вычисление количества поинтов (атрибут передается в attrname)
@@ -57,6 +51,19 @@ class Person:
 
         return points
 
+    def __recalculate_final_protection(self):
+        self.final_protection = self.total_defence_percent() / 100
+
+    def set_things(self, things):
+        """Устанавливаем список вещей."""
+        self.things = things
+        self.__recalculate_final_protection()
+
+    def decrease_health_points(self, attack_damage):
+        """Метод вычитания health_points экземпляра в зависимости от атаки
+        attack_damage."""
+        self.health_points -= attack_damage
+
     def total_defence_percent(self):
         """Вычисление количества поинтов защиты."""
         return self.__total_points('defence_percent')
@@ -68,6 +75,9 @@ class Person:
     def total_health_points(self):
         """Вычисление количества поинтов здоровья."""
         return self.__total_points('health_points')
+
+    def total_final_protection(self):
+        return self.final_protection
 
 
 class Paladin(Person):
