@@ -1,5 +1,3 @@
-from time import sleep
-
 from colorama import init
 from termcolor import colored
 
@@ -7,7 +5,7 @@ init()
 
 
 class Person():
-    def __init__(self, name, defense, attack, health):
+    def __init__(self, name, defense, attack, health, sex):
         if defense > 0.5 or defense < 0:
             raise ValueError('Неверное значение защиты')
         if attack > 20 or attack < 0:
@@ -18,6 +16,10 @@ class Person():
         self.defense = float(defense)
         self.attack = float(attack)
         self.health = float(health)
+        if sex == 'W':
+            self.sex = 'w'
+        else:
+            self.sex = 'm'
         self.things = []
 
     def finalAttack(self):
@@ -46,7 +48,6 @@ class Person():
             print(colored(f'Осталось {self.health} HP', 'blue'))
         else:
             print(colored(f'Боец {self.name} умер!', 'blue'))
-        sleep(0.5)
 
 
 class Paladin(Person):
@@ -66,3 +67,12 @@ class Warrior(Person):
         for thing in self.things:
             self.attack += thing.attack
         self.attack *= 2
+
+
+class Child(Paladin, Warrior):
+    def __init__(self, name, defense, attack, health, sex):
+        self.name = str(name)
+        self.defense = float(defense)
+        self.attack = float(attack)
+        self.health = float(health)
+        self.sex = sex

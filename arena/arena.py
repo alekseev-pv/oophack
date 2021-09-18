@@ -1,34 +1,65 @@
 import random
-from time import sleep
 
 from colorama import init
 from models.things import Thing, sort_key
-from models.warriors import Paladin, Warrior
+from models.warriors import Child, Paladin, Warrior
 from termcolor import colored
 
 init()
 print(colored('\n\n_____ START GAME  _____\n\n', 'yellow'))
 
+SURVIVAL = False
+
 COUNT_THINGS_ON_PERS = 4
 
-THINGS = sorted([
-    Thing('Socks of Fortune', random.randint(0, 20) / 100,
-          random.randint(0, 100), random.randint(0, 100)),
-    Thing('Gods armor', 0.1, 0, 100),
-    Thing('killing rage', 0, 100, 0),
-    Thing('Ring of Health', 0, 0, 100),
-    Thing('Ring of Power', 0.02, 5, 0),
-], key=sort_key)
+COUNT_PERSES = 10
 
-FIGHTERS = [
-    Warrior('Deathman', 0.1, 20, 5),
-    Warrior('Halk', 0.2, 20, 20),
-    Paladin('Grut', 0.2, 10, 30),
-    Paladin('King of Night', 0.3, 10, 40)
+NAMES = [
+    'Keith Lowe',
+    'Gary Palmer',
+    'Lucille Carroll',
+    'Joanne Baker',
+    'Ruby Hill',
+    'Douglas Perez',
+    'Marjorie Hoffman',
+    'Ashley Anderson',
+    'Sarah Tyler',
+    'Jennifer Turner',
+    'Eric Jones',
+    'Ivan Rodriguez',
+    'Jesse Kim',
+    'Stephen Wagner',
+    'Leonard Stevenson',
+    'Cathy Bennett',
+    'Cathy Parker',
+    'Brenda Pearson',
+    'Thomas Ross',
+    'Henry Watkins',
 ]
 
+THINGS = sorted([
+    Thing('Socks of Fortune', random.randint(0, 10) / 100,
+          random.randint(0, 10), random.randint(0, 100)),
+    Thing('Gods armor', 0.1, 0, 10),
+    Thing('killing rage', 0, 10, 0),
+    Thing('Ring of Health', 0, 0, 10),
+    Thing('Ring of Power', 0.02, 5, 0),
+    Thing('Casual hat', 0.1, 5, 5),
+    Thing('Ferrobots', 0.1, 2, 3)
+], key=sort_key)
 
-SURVIVAL = False
+
+def rand():
+    klasse = Warrior if random.randint(0, 1) else Paladin
+    name = NAMES.pop(random.randint(0, len(NAMES) - 1))
+    defense = random.randint(0, 50) / 100
+    attack = random.randint(0, 20)
+    helth = random.randint(1, 20)
+    sex = 'm' if random.randint(0, 1) else 'w'
+    return klasse(name, defense, attack, helth, sex)
+
+
+FIGHTERS = [rand() for _ in range(COUNT_PERSES)]
 
 
 def create_person(klasse):
@@ -36,7 +67,8 @@ def create_person(klasse):
         name=input('Введите имя: '),
         defense=float(input('Установите защиту от 0 до 0.5:  ')),
         attack=float(input('Установите атаку от 0 до 20:  ')),
-        health=float(input('Установите злоровье от 0 до 50:  ')), )
+        health=float(input('Установите злоровье от 0 до 50:  ')),
+        sex=(input('Выберит пол персонажа W/M:  ').upper()), )
     FIGHTERS.append(gamer)
 
 
@@ -74,7 +106,17 @@ def get_things(fighters, things):
             print(colored(
                 f'\n Бойцу "{fighter.name}" не повезло, ему не выпало ничего!',
                 'red'))
-        sleep(1)
+
+
+def burn_child(fighter_1, fighter_2):
+    name = (fighter_1.name + fighter_2.name)[:10]
+    defense = (fighter_1.defense + fighter_2.defense) / 2
+    attack = (fighter_1.attack + fighter_2.attack) / 2
+    health = (fighter_1.health + fighter_2.health) / 2
+    sex = fighter_1.sex
+    child = Child(name, defense, attack, health, sex)
+    FIGHTERS.append(child)
+    return child
 
 
 def battle(fighter_1, fighter_2):
@@ -82,6 +124,9 @@ def battle(fighter_1, fighter_2):
     freeze_health_2 = fighter_2.health
     attack_damage_1 = fighter_1.attack
     attack_damage_2 = fighter_2.attack
+    if fighter_1.sex != fighter_2.sex and random.randint(0, 3) == 1:
+        return burn_child(fighter_1, fighter_2)
+
     while True:
         fighter_2.decrease_helth(attack_damage_1)
         if fighter_2.health <= 0:
@@ -99,10 +144,11 @@ def main():
     count_battle = 0
     user_input()
     get_things(FIGHTERS, THINGS)
-    sleep(2)
     print(colored('\n---------  FIGHT!  --------\n', 'yellow'))
+
     while True:
-        if len(FIGHTERS) == 1:
+        len_fighters = len(FIGHTERS) - 2
+        if len_fighters == -1:
             break
         limit = len(FIGHTERS) - 1
         fighter_1 = FIGHTERS.pop(random.randint(0, limit))
@@ -111,9 +157,13 @@ def main():
         print(colored(f'Бой №{count_battle} начался! '
               f'Участники: {fighter_1.name} и {fighter_2.name}.\n', 'magenta'))
         winner = battle(fighter_1, fighter_2)
-        sleep(2)
-        print(f'В этом бою победил {winner.name}!!!\n')
-        FIGHTERS.append(winner)
+        if len_fighters < len(FIGHTERS):
+            print(f'В этом бою родился {winner.name}!\n')
+            FIGHTERS.append(fighter_1)
+            FIGHTERS.append(fighter_2)
+        else:
+            print(f'В этом бою победил {winner.name}!!!\n')
+            FIGHTERS.append(winner)
     print(colored(
         f'    Поздравляем победителя {FIGHTERS[0].name}!!!', 'yellow'))
 
