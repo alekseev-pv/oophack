@@ -44,7 +44,7 @@ class Menu:
         self.arena.generate_characters_for_computer(['warrior', 'paladin', 'dwarf'])
 
         while active:
-
+            # Игрок атакует
             self.arena.print_players_team()
             print(f'{Fore.RED}Вы атакуете!{Style.RESET_ALL}')
 
@@ -63,7 +63,7 @@ class Menu:
                 active = False
                 time.sleep(2)
                 continue
-
+            # Игрок защищается
             attacker = self.arena.team2.pop((
                 self.arena.get_index_of_character_with_maximum_attribute('final_attack')))
             self.arena.print_players_team()

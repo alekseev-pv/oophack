@@ -40,15 +40,18 @@ class Person:
 
 
 class Paladin(Person):
+    """Класс паладин в два раза больше здоровья."""
     def __init__(self, name, hp, base_attack, base_defence, things):
         super().__init__(name, hp * 2, base_attack, base_defence * 2, things)
 
 
 class Warrior(Person):
+    """Клаcс Warrior в два раза больше атака."""
     def __init__(self, name, hp, base_attack, base_defence, things):
         super().__init__(name, hp, base_attack * 2, base_defence, things)
 
 
 class Dwarf(Person):
+    """Класс dwarf, в два раза больше здоровья и защиты, но в 2 раза меньше атака."""
     def __init__(self, name, hp, base_attack, base_defence, things):
         super().__init__(name, hp * 2, base_attack / 2, base_defence * 2, things)
