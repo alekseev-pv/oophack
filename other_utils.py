@@ -17,6 +17,12 @@ names_for_percs = ['Гендальф', 'Артас', 'Гаррош', 'Генер
                    'Страж морепродуктов', 'Кыса-ногоцап', 'Веган-потрошитель',
                    'Кровавый Володя', 'Саблезубый Пикачу', 'Птичья личность', 'Авокадыш', 'Свин-картежник']
 
+map_spec_icons = {
+    'Paladin': 'o',
+    'Warrior': 'w',
+    'Person': 'x'
+}
+
 
 def create_stuff(count=len(fill_things), need_print=False):
     def sort_key(s):

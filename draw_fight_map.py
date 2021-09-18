@@ -4,6 +4,7 @@ from typing import List
 
 from colorama import Back, Fore, Style
 
+from other_utils import map_spec_icons
 from person import Person
 
 
@@ -14,7 +15,6 @@ def draw_all_percs(attacker: Person, victim: Person, percs: List[Person], speed)
         # Draw the text
         screen.addstr(x, y, message)
 
-
     px, py = 4, 2
     ix, iy = 1, 100
     print_xy(ix, iy, "INFO:")
@@ -22,24 +22,27 @@ def draw_all_percs(attacker: Person, victim: Person, percs: List[Person], speed)
         # TODO(color for map and info table)
         ix += 1
         if perc != attacker and perc != victim:
-            color_name = f'{perc.name}: hp = {perc.final_hp}, attack = {perc.final_attack}'
+            color_name = f'{perc.spec_name} - {perc.name}: hp = {perc.final_hp}, attack = {perc.final_attack}'
             print_xy(ix, iy, color_name)
             x = int((perc.point[0] / px))
             y = int((perc.point[1] / py))
-            print_xy(x, y, "O")
+            icon = map_spec_icons[perc.spec_name]
+            print_xy(x, y, icon)
         elif perc == attacker:
-            color_name = f'ATTACKER - {perc.name}: hp = {perc.final_hp}, attack = {perc.final_attack}'
+            color_name = f'ATTACKER - {perc.spec_name} - {perc.name}: hp = {perc.final_hp}, attack = {perc.final_attack}'
             print_xy(ix, iy - 11, color_name)
             x = int((perc.point[0] / px))
             y = int((perc.point[1] / py))
-            print_xy(x, y, "A")
+            icon = map_spec_icons[perc.spec_name]
+            print_xy(x, y, icon)
         else:
-            color_name = f'VICTIM - {perc.name}: hp = {perc.final_hp}, attack = {perc.final_attack}'
-            print_xy(ix , iy - 9, color_name)
+            color_name = f'VICTIM - {perc.spec_name} - {perc.name}: hp = {perc.final_hp}, attack = {perc.final_attack}'
+            print_xy(ix, iy - 9, color_name)
             x = int((perc.point[0] / px))
             y = int((perc.point[1] / py))
-            print_xy(x, y, "V")
-        screen.refresh()
+            icon = map_spec_icons[perc.spec_name]
+            print_xy(x, y, icon)
+    screen.refresh()
     time.sleep(speed)
     screen.clear()
 

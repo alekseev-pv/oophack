@@ -7,6 +7,6 @@ if __name__ == "__main__":
     items = create_stuff()
     percs = create_percs(count=10)
     equip_percs(percs, items)
-    fight_with_map(percs, 0.1)
+    fight_with_map(percs, 0.3)
     print(20 * '- ')
     print(percs[0])

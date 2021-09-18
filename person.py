@@ -13,7 +13,7 @@ class Person:
         self.speed = speed
         self.point = point
         self.type_attack = 'melee'
-        self.radius_attack = 5
+        self.radius_attack = 3
         # print(f'Персонаж {self.name} создан!')
 
     def __str__(self):
@@ -76,7 +76,7 @@ class Person:
         return [a, b]
 
     def run_to_target(self, target):
-        target_space = self.simple_distance(target)
+        target_space = self.simple_distance(target) - self.radius_attack + 1
         if self.speed > abs(target_space):
             move = self.move_2d(target, target_space, target_space)
         else:
