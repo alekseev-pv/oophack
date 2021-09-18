@@ -20,9 +20,15 @@ class Thing:
         hp_per - жизнь.
         """
         self.name = name
-        self.defence_per = defence_per
-        self.attack_per = attack_per
-        self.hp_per = hp_per
+        self.defence_per = round(defence_per, 2)
+        self.attack_per = round(attack_per, 2)
+        self.hp_per = round(hp_per, 2)
+
+    def __str__(self) -> str:
+        return (f'Имя: {self.name} '
+                f'Защита: {self.defence_per} '
+                f'Нападение:{self.attack_per} '
+                f'Жизнь:{self.hp_per}')
 
 
 class Person:
@@ -153,7 +159,7 @@ class Game():
                 print(f'{second_warrior.name} победил' + Style.RESET_ALL)
                 return first_warrior
 
-    def auto_game(self, warrior_names, warrior_types):
+    def auto_game(self, warrior_names, warrior_types, person=None):
         all_things = self.create_all_things()  # произвольноe количество вещей
         warrior_names = [f'{names.get_first_name()}_warrior'
                          for i in range(20)]  # список имен персонажей
@@ -161,6 +167,8 @@ class Game():
             warrior_names[random.randint(
                 0, len(warrior_names)-1)], 100, random.randint(10, 100),
             random.uniform(0.01, 0.1)) for i in range(0, 10)]  # список войнов
+        if person is not None:
+            warriors.append(person)
         for warrior in warriors:
             warrior.set_things(self.get_random_things(all_things))
         while len(warriors) != 1:
@@ -181,7 +189,26 @@ def main() -> None:
     warrior_names = [f'{names.get_first_name()}_warrior'
                      for i in range(20)]  # список имен персонажей
     warrior_types = [Paladin, Warrior]  # тип война
-    game.auto_game(warrior_names, warrior_types)
+    game_type = input(
+        'Выберите тип игры 1 - симуляция, 2 - создать персонажа\n')
+    if game_type == '1':
+        game.auto_game(warrior_names, warrior_types)
+    else:
+        name = input('Введите имя песонажа\n')
+        things = game.create_all_things()
+        for thing in things:
+            print(thing)
+        selected_things_name = input(
+            'Введите через пробел имена вооружений, не более 4\n').split(' ')
+        selected_things = list(
+            filter(lambda x: x.name in selected_things_name, things))
+        race = warrior_types[int(
+            input('Если вы Paladin введите 1, если Warrior то 2\n'))-1]
+        attack = int(input('Определите уровень атаки от 1 до 100\n'))
+        defence = int(input('Определите уровень защиты от 1 до 99\n'))/100
+        person = race(name, 100, attack, defence)
+        person.set_things(selected_things)
+        game.auto_game(warrior_names, warrior_types, person)
 
 
 if __name__ == '__main__':
