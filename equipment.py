@@ -5,7 +5,7 @@ class Armor:
     def __init__(self, name: str, armor: float, *args, **kwargs) -> None:
         self.name: str = name
         self.armor = armor
-        super().__init__(*args, **kwargs)
+        super().__init__()
 
     def __str__(self):
         return  self.name
@@ -35,7 +35,7 @@ class Weapon:
     def __init__(self, name: str, damage: float, *args, **kwargs):
         self.name: str = name
         self.damage: float = damage
-        super().__init__(*args, **kwargs)
+        super().__init__()
 
     def __str__(self):
         return self.name
