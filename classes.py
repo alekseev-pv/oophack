@@ -1,8 +1,9 @@
-import colorama
-from colorama import Fore, Back, Style
 import random
 from time import sleep
 from typing import List
+
+import colorama
+from colorama import Back, Fore, Style
 
 
 class Thing:
