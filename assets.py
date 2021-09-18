@@ -3,42 +3,42 @@ CHARACTERS = [
         'name': 'Darrow O\'Lykos',
         'hp': 100,
         'defense': 75,
-        'attack': 100,
+        'attack': 10,
         'fraction': 'gold',
     },
     {
         'name': 'Sevro au Barca',
         'hp': 80,
         'defense': 60,
-        'attack': 125,
+        'attack': 9,
         'fraction': 'gold'
     },
     {
         'name': 'Sefi',
         'hp': 100,
         'defense': 80,
-        'attack': 90,
+        'attack': 9,
         'fraction': 'obsidian'
     },
     {
         'name': 'Ragnar Volarus',
         'hp': 150,
         'defense': 100,
-        'attack': 125,
+        'attack': 15,
         'fraction': 'obsidian'
     },
     {
         'name': 'Volga Fjorgan',
         'hp': 90,
         'defense': 70,
-        'attack': 85,
+        'attack': 12,
         'fraction': 'obsidian'
     },
     {
         'name': 'Cassius au Bellona',
         'hp': 100,
         'defense': 80,
-        'attack': 90,
+        'attack': 9,
         'fraction': 'gold'
     },
 
