@@ -71,8 +71,8 @@ class Person:
             c = 1
         cos_ = round(x / c, 2)
         sin_ = round(y / c, 2)
-        a = round(move_distance * cos_, 2)
-        b = round(move_distance * sin_, 2)
+        a = move_distance * cos_
+        b = move_distance * sin_
         return [a, b]
 
     def run_to_target(self, target):
@@ -82,5 +82,7 @@ class Person:
         else:
             move = self.move_2d(target, target_space, self.speed)
 
-        self.point[0] += move[0]
-        self.point[0] += move[1]
+        self.point[0] = round(self.point[0] + move[0], 2)
+        self.point[1] = round(self.point[1] + move[1], 2)
+        print(self.point[0])
+        print(self.point[1])

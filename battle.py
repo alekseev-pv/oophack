@@ -19,6 +19,8 @@ def start_fight(percs):
         defend_pers = choice(percs)
         while attack_pers == defend_pers:
             defend_pers = choice(percs)
+        print(attack_pers.simple_distance(defend_pers))
+        print(f'Радиус {attack_pers.radius_attack}')
         if attack_pers.simple_distance(defend_pers) <= attack_pers.radius_attack:
             stat_battle = defend_pers.under_attack(attack_pers)
             print(Back.RED + Fore.BLACK +
@@ -29,10 +31,6 @@ def start_fight(percs):
                   f' здоровья после атаки: {stat_battle["hp_after_attack"]}'
                   + Style.RESET_ALL)
         else:
-            print(attack_pers.simple_distance(defend_pers))
-            print(f'Радиус {attack_pers.radius_attack}')
-            print(attack_pers)
-            print(defend_pers)
             attack_pers.run_to_target(defend_pers)
             print(Back.YELLOW + Fore.BLACK +
                   f'Атакующий: {attack_pers.name}, '
