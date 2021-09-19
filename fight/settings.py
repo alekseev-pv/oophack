@@ -1,11 +1,13 @@
-from build import Paladin, Person, Warrior
+import fight.build as build
 
 # укажите классы создания героев, которые будут использоваться.
 PERSON_CLASSES = [
-    Person,
-    Paladin,
-    Warrior,
+    build.Person,
+    build.Paladin,
+    build.Warrior,
 ]
+
+START_BALANCE = 100
 
 NAMES_HEROES = (
     'Зевс',

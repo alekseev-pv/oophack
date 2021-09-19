@@ -1,74 +1,47 @@
-from random import choice, randint, sample, shuffle
+from pprint import pprint
 
-from build import Thing
-from settings import NAMES_HEROES, NAMES_THINGS, PERSON_CLASSES
-
-
-def make_things():
-    things = []
-    for name in NAMES_THINGS:
-        things.append(Thing(
-            name,
-            randint(0, 10),
-            randint(0, 10),
-            randint(0, 3),
-        ))
-    return sorted(things, key=lambda x: x.protection)
+import fight.cli as cli
+import fight.logic as logic
 
 
-def make_persons(count):
-    persons = []
-    names = sample(NAMES_HEROES, count)
+def main():
+    count_heroes = cli.get_count_heroes()
+    all_heroes = logic.dress_persons(
+        logic.make_persons(count_heroes),
+        logic.make_things(),
+    )
+    pprint(all_heroes)
+    user_hero_id = cli.get_hero_id(count_heroes)
+    user_hero_obj = list(filter(lambda x: x.id == user_hero_id, all_heroes))[0]
+    odds = count_heroes - 1
+    user_bet = cli.get_bet(odds)
 
-    def make_random_person(person_name, immunity, power, life,):
-        person_class = choice(PERSON_CLASSES)
-        persons.append(person_class(person_name, immunity, power, life,))
+    if user_bet:
+        print(f'\nВаша ставка {user_bet} на {user_hero_obj}\n')
 
-    for name in names:
-        make_random_person(
-            name,
-            randint(0, 10),
-            randint(0, 10),
-            randint(1, 3),
-        )
-    return persons
+    while len(all_heroes) > 1:
+        logic.make_arena(all_heroes)
+    winner = all_heroes[0]
+    print(f'Победитель: {winner}')
 
+    if winner is user_hero_obj:
+        print('Вы угадали!')
+        logic.GLOBAL_USER_BALANCE = \
+            logic.GLOBAL_USER_BALANCE + (user_bet * odds)
+    else:
+        print('В другой раз точно повезет!')
+        logic.GLOBAL_USER_BALANCE = logic.GLOBAL_USER_BALANCE - user_bet
 
-def dress_persons(persons, things):
-    for person in persons:
-        added_things = sample(things, randint(1, 4))
-        person.set_things(added_things)
-    return persons
-
-
-def battle(attacker, defender):
-    if defender.life > 0:
-        damage = attacker.final_power - \
-                 attacker.final_power * \
-                 (defender.final_protection / 100)
-        damage = round(damage, 2)
-        print(f'{attacker} наносит удар по {defender} на {damage}')
-        defender.get_hit(damage)
-    return defender.life
-
-
-def make_arena(heroes):
-    shuffle(heroes)
-    for attacker in heroes:
-        for defender in heroes:
-            if attacker != defender:
-                if battle(attacker, defender) <= 0:
-                    heroes.remove(defender)
-                    print(f'выбыл {defender}')
+    user_balance = logic.get_user_balance()
+    if user_balance > 0:
+        more = cli.get_more()
+        if more is True:
+            main()
+        else:
+            print('До скорого!')
+    else:
+        print('Будут деньги — приходите ;-) ')
 
 
 if __name__ == "__main__":
-    all_heroes = dress_persons(
-        make_persons(10),
-        make_things(),
-    )
-
-    while len(all_heroes) > 1:
-        make_arena(all_heroes)
-
-    print(f'Победитель: {all_heroes}')
+    main()

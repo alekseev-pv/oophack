@@ -10,7 +10,8 @@ class Thing:
 
 
 class Person:
-    def __init__(self, name, base_protection, power_base, life,):
+    def __init__(self, pers_id, name, base_protection, power_base, life, ):
+        self.id = pers_id
         self.name = name
         self.final_protection = base_protection
         self.final_power = power_base
@@ -26,7 +27,7 @@ class Person:
         self.life = round(self.life - (damage / 100), 4)
 
     def __repr__(self):
-        return (f'{self.__class__.__name__}({self.name}: '
+        return (f'{self.id}: {self.__class__.__name__}({self.name} '
                 f'{self.final_protection},{self.final_power},{self.life})'
                 )
 
