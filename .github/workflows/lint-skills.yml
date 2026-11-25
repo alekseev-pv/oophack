@@ -1,0 +1,42 @@
+name: AI Skills Security Check
+
+on:
+  pull_request:
+    paths:
+      - '.cursor/skills/**'
+      - '.agents/skills/**'
+      - 'AGENTS.md'
+      - '.github/workflows/lint-skills.yml'
+      - 'scripts/lint_skills.py'
+
+jobs:
+  protect-ci-files:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Block unauthorized changes to linter files
+        env:
+          PR_AUTHOR: ${{ github.actor }}
+        run: |
+          ALLOWED_AUTHORS="alekseev-pv"
+          CHANGED=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+
+          if echo "$CHANGED" | grep -E "^(\.github/workflows/lint-skills\.yml|scripts/lint_skills\.py)$"; then
+            if [[ ! " $ALLOWED_AUTHORS " =~ " $PR_AUTHOR " ]]; then
+              echo "ОШИБКА: Пользователю $PR_AUTHOR запрещено изменять файлы линтера!"
+              exit 1
+            fi
+          fi
+
+  lint-skills:
+    needs: protect-ci-files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python scripts/lint_skills.py
